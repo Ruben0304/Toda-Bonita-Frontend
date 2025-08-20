@@ -1,0 +1,726 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --pink-pastel: #FFE5EC;
+  --pink-medium: #FFB3C6;
+  --pink-dark: #FF8FAB;
+  --coral: #FF9A8B;
+  --sage: #A8E6CF;
+  --champagne: #F7E7CE;
+  --cream: #FFFEF7;
+  --lavender: #E8D5FF;
+  --rose-gold: #E8B4CB;
+  --mint: #C7EFCF;
+  --peach: #FFD3A5;
+  --primary: #FF8FAB;
+  --secondary: #A8E6CF;
+  --accent: #FFD3A5;
+  --neutral: #F8F8F8;
+  --text-dark: #2C3E50;
+  --text-light: #7F8C8D;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, #ffffff 0%, #fef7f7 30%, #fefefe 100%);
+  min-height: 100vh;
+  letter-spacing: -0.01em;
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--pink-pastel);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--pink-medium);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--pink-dark);
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse 3s ease-in-out infinite;
+}
+
+.gradient-bg {
+  background: linear-gradient(-45deg, #FFE5EC, #FFB3C6, #FFE0CC, #D4EDDA);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+/* Efectos hover para cards */
+.card-hover {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card-hover:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(255, 179, 198, 0.3);
+}
+
+/* Efecto parallax */
+.parallax {
+  position: relative;
+  overflow: hidden;
+}
+
+.parallax-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+/* Botón con efecto líquido */
+.liquid-button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.liquid-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.liquid-button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Imagen con efecto zoom suave */
+.image-zoom {
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.image-zoom img {
+  transition: transform 0.6s ease;
+}
+
+.image-zoom:hover img {
+  transform: scale(1.1);
+}
+
+/* Texto con gradiente */
+.gradient-text {
+  background: linear-gradient(135deg, #FF8FAB 0%, #FFB3C6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Navegación lateral moderna */
+.modern-sidebar {
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.95);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 179, 198, 0.2);
+  box-shadow: 0 25px 50px -12px rgba(255, 179, 198, 0.25);
+}
+
+.modern-sidebar:hover {
+  transform: translateY(-50%) scale(1.02);
+  box-shadow: 0 35px 60px -12px rgba(255, 179, 198, 0.35);
+}
+
+.nav-item-modern {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-item-modern::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background: linear-gradient(135deg, #FF8FAB, #FFB3C6);
+  transform: translateX(-100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-item-modern::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 179, 198, 0.1), rgba(255, 224, 204, 0.1));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.nav-item-modern:hover::before,
+.nav-item-modern.bg-gradient-to-r::before {
+  transform: translateX(0);
+}
+
+.nav-item-modern:hover::after {
+  opacity: 1;
+}
+
+/* Botón CTA moderno */
+.cta-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s;
+}
+
+.cta-button:hover::before {
+  left: 100%;
+}
+
+/* Elementos de navegación móvil */
+.mobile-nav-item {
+  animation: slideInFromLeft 0.3s ease-out forwards;
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.mobile-nav-item:nth-child(1) { animation-delay: 0.1s; }
+.mobile-nav-item:nth-child(2) { animation-delay: 0.15s; }
+.mobile-nav-item:nth-child(3) { animation-delay: 0.2s; }
+.mobile-nav-item:nth-child(4) { animation-delay: 0.25s; }
+.mobile-nav-item:nth-child(5) { animation-delay: 0.3s; }
+
+@keyframes slideInFromLeft {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Slider de productos */
+.product-slider {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.product-slider::-webkit-scrollbar {
+  height: 8px;
+}
+
+.product-slide {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+}
+
+/* Efecto shimmer para las imágenes mientras cargan */
+.shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .side-nav-desktop {
+    display: none;
+  }
+  .main-content {
+    margin-left: 0;
+    padding-top: 80px;
+  }
+}
+
+@media (min-width: 769px) {
+  .top-nav-mobile {
+    display: none;
+  }
+  .main-content {
+    margin-left: 256px;
+    padding-top: 0;
+  }
+}
+
+/* Decoración de burbujas */
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(255, 179, 198, 0.2));
+  animation: float 8s ease-in-out infinite;
+}
+
+.service-card {
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 179, 198, 0.2);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.service-card:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(255, 179, 198, 0.4);
+  box-shadow: 0 25px 50px -12px rgba(255, 179, 198, 0.25);
+}
+
+/* Mejoras de tipografía */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.font-bold {
+  font-weight: 600;
+}
+
+.font-playfair {
+  font-family: 'Playfair Display', serif;
+}
+
+.font-inter {
+  font-family: 'Inter', sans-serif;
+}
+
+.font-montserrat {
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Efectos de glassmorphism */
+.glass-effect {
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+/* Mejoras en elementos interactivos */
+button, .cursor-pointer {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Animación de entrada mejorada */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-in-up {
+  animation: slideInUp 0.6s ease-out forwards;
+}
+
+/* Efectos de profundidad */
+.depth-1 {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.depth-2 {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.depth-3 {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+/* Mejoras en el scroll suave */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Enhanced animations that work with AOS */
+@keyframes float-enhanced {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-15px) rotate(1deg);
+  }
+  66% {
+    transform: translateY(-5px) rotate(-1deg);
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 179, 198, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 179, 198, 0.6);
+  }
+}
+
+@keyframes particle-float {
+  0% {
+    transform: translateY(0px) translateX(0px);
+  }
+  25% {
+    transform: translateY(-10px) translateX(5px);
+  }
+  50% {
+    transform: translateY(-20px) translateX(-5px);
+  }
+  75% {
+    transform: translateY(-10px) translateX(3px);
+  }
+  100% {
+    transform: translateY(0px) translateX(0px);
+  }
+}
+
+@keyframes magnetic-hover {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.02);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Enhanced Three.js background integration */
+.three-background-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.3;
+}
+
+/* AOS enhancements */
+[data-aos] {
+  will-change: transform, opacity;
+}
+
+/* Enhanced floating elements for beauty theme */
+.beauty-float {
+  animation: float-enhanced 8s ease-in-out infinite;
+}
+
+.beauty-glow {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+.particle-animation {
+  animation: particle-float 6s ease-in-out infinite;
+}
+
+/* Magnetic effect for interactive elements */
+.magnetic-effect {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.magnetic-effect:hover {
+  animation: magnetic-hover 0.6s ease-in-out;
+}
+
+/* Enhanced gradient text with shimmer */
+.gradient-text-enhanced {
+  background: linear-gradient(
+    45deg,
+    #FF8FAB 0%,
+    #FFB3C6 25%,
+    #FF9A8B 50%,
+    #FFB3C6 75%,
+    #FF8FAB 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Performance optimizations for Three.js */
+.three-container {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Beauty salon specific decorative elements */
+.sparkle-effect {
+  position: relative;
+}
+
+.sparkle-effect::before,
+.sparkle-effect::after {
+  content: '✨';
+  position: absolute;
+  opacity: 0;
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+.sparkle-effect::before {
+  top: -10px;
+  left: -10px;
+  animation-delay: 0s;
+}
+
+.sparkle-effect::after {
+  bottom: -10px;
+  right: -10px;
+  animation-delay: 1s;
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.5) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(180deg);
+  }
+}
+
+/* Enhanced card interactions */
+.beauty-card {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-style: preserve-3d;
+}
+
+.beauty-card:hover {
+  transform: translateY(-15px) rotateX(5deg) rotateY(5deg);
+  box-shadow: 
+    0 25px 50px rgba(255, 179, 198, 0.3),
+    0 0 30px rgba(255, 179, 198, 0.2);
+}
+
+/* Three.js integration helpers */
+.webgl-fallback {
+  background: linear-gradient(
+    45deg,
+    rgba(255, 229, 236, 0.1) 0%,
+    rgba(255, 179, 198, 0.1) 50%,
+    rgba(255, 224, 204, 0.1) 100%
+  );
+  animation: gradientShift 10s ease infinite;
+}
+
+/* Enhanced navigation animations */
+.nav-item-enhanced {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-item-enhanced::before {
+  content: '';
+  position: absolute;
+  left: -100%;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 179, 198, 0.1), transparent);
+  transition: left 0.5s ease-in-out;
+}
+
+.nav-item-enhanced:hover::before {
+  left: 100%;
+}
+
+/* Modern sidebar improvements */
+.modern-sidebar {
+  backdrop-filter: blur(25px);
+  background: rgba(255, 255, 255, 0.97);
+  border-right: 1px solid rgba(255, 179, 198, 0.15);
+  box-shadow: 
+    0 25px 50px -12px rgba(255, 179, 198, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+/* Elegant hover effects for navigation */
+@keyframes nav-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(255, 179, 198, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(255, 179, 198, 0.4);
+  }
+}
+
+.nav-item-enhanced:hover {
+  animation: nav-glow 2s ease-in-out infinite;
+}
+
+/* Logo animations */
+@keyframes logo-breathe {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.05) rotate(2deg);
+  }
+}
+
+.beauty-glow:hover {
+  animation: logo-breathe 3s ease-in-out infinite;
+}
+
+/* Status indicator animation */
+@keyframes status-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+/* Creative hero section enhancements */
+@keyframes hero-gradient-shift {
+  0% {
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg);
+  }
+  25% {
+    background-position: 50% 0%;
+    filter: hue-rotate(90deg);
+  }
+  50% {
+    background-position: 100% 50%;
+    filter: hue-rotate(180deg);
+  }
+  75% {
+    background-position: 50% 100%;
+    filter: hue-rotate(270deg);
+  }
+  100% {
+    background-position: 0% 50%;
+    filter: hue-rotate(360deg);
+  }
+}
+
+/* Mobile performance optimizations */
+@media (max-width: 768px) {
+  .three-background-overlay {
+    opacity: 0.2;
+  }
+  
+  .beauty-card:hover {
+    transform: translateY(-10px);
+  }
+  
+  .particle-animation {
+    animation-duration: 8s;
+  }
+
+  
+  .nav-item-enhanced:hover {
+    animation: none;
+  }
+}
