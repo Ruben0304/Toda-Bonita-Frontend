@@ -19,18 +19,20 @@
         
         <!-- Subtítulo -->
         <template #subtitle>
-          La etapa de ser nuestra clienta...
+          La etapa de ser nuestra clienta... ¡Te recomiendo no saltártela!
         </template>
         
         <!-- Botones -->
         <template #buttons>
-          <button class="group px-8 py-4 bg-gradient-to-r from-pink-500 to-orange-500 text-white font-bold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-lg relative overflow-hidden">
-            <span class="relative z-10 flex items-center space-x-2">
-              <Icon name="lucide:calendar-heart" class="w-5 h-5" />
-              <span>Reservar Mi Transformación</span>
-              <Icon name="lucide:arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </span>
-          </button>
+          <NuxtLink to="/reserva">
+            <button class="group px-8 py-4 bg-gradient-to-r from-pink-500 to-orange-500 text-white font-bold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-lg relative overflow-hidden">
+              <span class="relative z-10 flex items-center space-x-2">
+                <Icon name="lucide:calendar-heart" class="w-5 h-5" />
+                <span>Reservar Mi Transformación</span>
+                <Icon name="lucide:arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </span>
+            </button>
+          </NuxtLink>
           
           <button 
             @click="scrollToSection('servicios')"
@@ -45,40 +47,7 @@
         </template>
       </HeroAnimations>
       
-      <!-- Estadísticas/Features destacadas -->
-      <div 
-        class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto"
-        data-aos="fade-up"
-        data-aos-delay="1000"
-        data-aos-duration="1000"
-      >
-        <div class="text-center p-4 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30">
-          <div class="text-3xl font-bold text-pink-600 mb-2">500+</div>
-          <div class="text-sm text-gray-600 font-medium">Clientas Felices</div>
-        </div>
-        <div class="text-center p-4 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30">
-          <div class="text-3xl font-bold text-pink-600 mb-2">5★</div>
-          <div class="text-sm text-gray-600 font-medium">Calificación</div>
-        </div>
-        <div class="text-center p-4 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30">
-          <div class="text-3xl font-bold text-pink-600 mb-2">3+</div>
-          <div class="text-sm text-gray-600 font-medium">Años de Experiencia</div>
-        </div>
-      </div>
 
-      <!-- Indicador de scroll mejorado -->
-      <div 
-        class="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-        data-aos="fade-in"
-        data-aos-delay="1200"
-      >
-        <div class="flex flex-col items-center space-y-2 animate-bounce">
-          <div class="text-sm text-pink-500 font-medium">Desliza para explorar</div>
-          <div class="w-8 h-8 border-2 border-pink-400 rounded-full flex items-center justify-center">
-            <Icon name="lucide:chevron-down" class="w-4 h-4 text-pink-500" />
-          </div>
-        </div>
-      </div>
 
       <!-- Overlay sutil para legibilidad -->
       <div class="absolute inset-0 bg-white/10 backdrop-blur-[1px]"></div>
@@ -393,12 +362,13 @@
               <p class="text-center font-semibold text-gray-700 mb-4">
                 ¿Lista para tu transformación?
               </p>
-              <button 
-                @click="bookAppointment"
-                class="w-full py-4 bg-gradient-to-r from-pink-500 to-orange-500 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
-              >
-                Agenda Tu Cita Ahora
-              </button>
+              <NuxtLink to="/reserva">
+                <button 
+                  class="w-full py-4 bg-gradient-to-r from-pink-500 to-orange-500 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                >
+                  Agenda Tu Cita Ahora
+                </button>
+              </NuxtLink>
             </div>
           </div>
         </div>

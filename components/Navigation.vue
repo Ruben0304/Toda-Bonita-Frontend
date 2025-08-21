@@ -45,12 +45,14 @@
           </NuxtLink>
         </div>
         <div class="p-4 border-t border-pink-100/50">
-          <button class="cta-button w-full py-3 px-6 bg-gradient-to-r from-pink-400 to-orange-300 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
-            <span class="relative z-10 flex items-center justify-center space-x-2">
-              <Icon name="lucide:calendar" class="w-4 h-4" />
-              <span>Reservar Cita</span>
-            </span>
-          </button>
+          <NuxtLink to="/reserva" class="block" @click="mobileMenuOpen = false">
+            <button class="cta-button w-full py-3 px-6 bg-gradient-to-r from-pink-400 to-orange-300 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
+              <span class="relative z-10 flex items-center justify-center space-x-2">
+                <Icon name="lucide:calendar" class="w-4 h-4" />
+                <span>Reservar Cita</span>
+              </span>
+            </button>
+          </NuxtLink>
         </div>
       </div>
     </nav>
@@ -107,13 +109,15 @@
 
         <!-- Bottom Section -->
         <div class="mt-6 space-y-4">
-          <button class="cta-button w-full py-4 px-6 bg-gradient-to-r from-pink-400 via-rose-400 to-orange-400 text-white font-semibold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden group transform hover:scale-105">
-            <span class="relative z-10 flex items-center justify-center space-x-2">
-              <Icon name="lucide:calendar-heart" class="w-5 h-5 group-hover:animate-pulse" />
-              <span>Reservar Cita</span>
-            </span>
-            <div class="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          </button>
+          <NuxtLink to="/reserva" class="block">
+            <button class="cta-button w-full py-4 px-6 bg-gradient-to-r from-pink-400 via-rose-400 to-orange-400 text-white font-semibold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden group transform hover:scale-105">
+              <span class="relative z-10 flex items-center justify-center space-x-2">
+                <Icon name="lucide:calendar-heart" class="w-5 h-5 group-hover:animate-pulse" />
+                <span>Reservar Cita</span>
+              </span>
+              <div class="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </button>
+          </NuxtLink>
           
           <!-- Status indicator -->
           <div class="flex items-center justify-center space-x-3 py-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl border border-green-100">
@@ -149,7 +153,7 @@ const navItems = [
   { id: 'servicios', label: 'Servicios', icon: 'lucide:scissors', route: '/servicios' },
   { id: 'productos', label: 'Productos', icon: 'lucide:shopping-bag', route: '/productos' },
   { id: 'galeria', label: 'Galería', icon: 'lucide:image', route: '/galeria' },
-  { id: 'reservas', label: 'Reservas', icon: 'lucide:calendar-check', route: '/reservas' },
+  { id: 'reservas', label: 'Reservas', icon: 'lucide:calendar-check', route: '/reserva' },
   { id: 'contacto', label: 'Contacto', icon: 'lucide:phone', route: '/contacto' },
 ]
 

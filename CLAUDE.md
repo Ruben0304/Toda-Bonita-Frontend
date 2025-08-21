@@ -81,3 +81,19 @@ This is a Nuxt 4 application for "Toda Bonita" beauty salon website. It's a sing
   - Enhanced typography with Inter font
   - Improved card hover effects and shadows
 - **Fixed layout issues**: Removed unwanted spacing between navigation and content
+
+### Navigation & Layout Fixes (January 2025)
+
+- **Fixed static navigation**: Removed problematic hover effects that caused sidebar movement/floating
+  - Eliminated `.modern-sidebar:hover` transform and scale animations
+  - Removed `.nav-item-enhanced:hover` glow animations that caused position shifts
+  - Navigation now remains completely static and doesn't move on hover or scroll
+- **Corrected layout spacing**: Fixed content and footer positioning relative to 288px sidebar
+  - Updated layout from `lg:ml-64` to `lg:ml-72` (288px) to match actual sidebar width (w-72)
+  - Added proper content padding with `lg:pr-6` for optimal spacing
+  - Fixed footer positioning with `lg:ml-72` to prevent it from going behind navigation
+  - Updated responsive CSS breakpoints to use correct 288px margin
+- **Layout structure improvements**:
+  - Main content properly utilizes space to the right of sidebar
+  - Footer correctly respects sidebar space instead of overlapping
+  - Consistent spacing throughout the application
