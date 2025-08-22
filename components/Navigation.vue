@@ -1,12 +1,16 @@
 <template>
   <div class="relative">
     <!-- Navegación Móvil Superior -->
-    <nav class="lg:hidden fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl shadow-lg border-b border-pink-100/50">
+    <nav class="lg:hidden fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl shadow-xl shadow-pink-200/30 border-b border-pink-100/30">
       <div class="flex items-center justify-between p-4">
         <div class="flex items-center space-x-3">
           <div class="relative">
-            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-pink-400 via-rose-400 to-orange-400 flex items-center justify-center shadow-lg transform rotate-3 hover:rotate-0 transition-transform duration-300">
-              <Icon name="lucide:sparkles" class="w-5 h-5 text-white" />
+            <div class="w-10 h-10 rounded-2xl bg-white/90 flex items-center justify-center shadow-lg transform rotate-3 hover:rotate-0 transition-transform duration-300 border border-pink-100">
+              <img 
+                src="/img/logolisto.png" 
+                alt="Toda Bonita Logo" 
+                class="w-8 h-8 object-contain"
+              />
             </div>
             <div class="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-br from-yellow-300 to-orange-300 rounded-full animate-pulse"></div>
           </div>
@@ -25,15 +29,15 @@
           />
         </button>
       </div>
-      <div v-if="mobileMenuOpen" class="animate-fade-in-up bg-white/98 backdrop-blur-xl border-t border-pink-100/50">
+      <div v-if="mobileMenuOpen" class="animate-fade-in-up bg-white/98 backdrop-blur-xl border-t border-pink-100/30 shadow-lg shadow-pink-200/20">
         <div class="p-2 space-y-1">
           <NuxtLink
             v-for="(item, index) in navItems"
             :key="item.id"
             :to="item.route"
             :class="[
-              'mobile-nav-item block w-full text-left px-4 py-3 rounded-xl transition-all duration-300 group relative overflow-hidden',
-              $route.path === item.route ? 'bg-gradient-to-r from-pink-100 to-orange-100 text-pink-700' : 'hover:bg-gradient-to-r hover:from-pink-50 hover:to-orange-50'
+              'mobile-nav-item block w-full text-left px-4 py-3 rounded-xl transition-all duration-300 group relative overflow-hidden border border-transparent',
+              $route.path === item.route ? 'bg-gradient-to-r from-pink-50 to-orange-50 text-pink-700 border-pink-200/40 shadow-sm' : 'hover:bg-gradient-to-r hover:from-pink-25 hover:to-orange-25 hover:border-pink-100/30'
             ]"
             :style="{ animationDelay: `${index * 50}ms` }"
             @click="mobileMenuOpen = false"
@@ -58,13 +62,17 @@
     </nav>
 
     <!-- Navegación Lateral Desktop -->
-    <nav class="hidden lg:block fixed left-0 top-0 bottom-0 w-72 z-40 backdrop-blur-xl bg-white/95 border-r shadow-xl border-pink-100/50 modern-sidebar">
+    <nav class="hidden lg:block fixed left-0 top-0 bottom-0 w-72 z-40 backdrop-blur-xl bg-white/98 border-r shadow-2xl shadow-pink-200/20 border-pink-100/30 modern-sidebar">
       <div class="p-6 h-full flex flex-col">
         <!-- Logo Section Enhanced -->
         <div class="mb-8 text-center relative">
           <div class="relative inline-block">
-            <div class="w-16 h-16 mx-auto mb-4 rounded-3xl bg-gradient-to-br from-pink-400 via-rose-400 to-orange-400 flex items-center justify-center shadow-2xl transform hover:scale-105 transition-all duration-300 beauty-glow">
-              <Icon name="lucide:sparkles" class="w-8 h-8 text-white drop-shadow-sm" />
+            <div class="w-16 h-16 mx-auto mb-4 rounded-3xl bg-white/95 flex items-center justify-center shadow-2xl transform hover:scale-105 transition-all duration-300 beauty-glow border border-pink-100">
+              <img 
+                src="/img/logolisto.png" 
+                alt="Toda Bonita Logo" 
+                class="w-12 h-12 object-contain"
+              />
             </div>
             <div class="absolute -top-2 -right-2 w-5 h-5 bg-gradient-to-br from-yellow-300 to-orange-300 rounded-full animate-pulse sparkle-effect"></div>
             <div class="absolute -bottom-1 -left-1 w-3 h-3 bg-gradient-to-br from-green-300 to-emerald-300 rounded-full animate-pulse" style="animation-delay: 1s"></div>
@@ -80,10 +88,10 @@
             <NuxtLink
               :to="item.route"
               :class="[
-                'nav-item-enhanced w-full text-left px-5 py-4 rounded-2xl transition-all duration-300 group relative overflow-hidden block',
+                'nav-item-enhanced w-full text-left px-4 py-3 rounded-xl transition-all duration-300 group relative overflow-hidden block border border-transparent',
                 $route.path === item.route 
-                  ? 'bg-gradient-to-r from-pink-100 via-rose-50 to-orange-100 text-pink-700 shadow-lg transform scale-105' 
-                  : 'hover:bg-gradient-to-r hover:from-pink-50 hover:to-orange-50 hover:translate-x-2 hover:shadow-lg'
+                  ? 'bg-gradient-to-r from-pink-50 via-rose-25 to-orange-50 text-pink-700 shadow-md shadow-pink-200/30 border-pink-200/30' 
+                  : 'hover:bg-gradient-to-r hover:from-pink-25 hover:to-orange-25 hover:border-pink-100/20 hover:shadow-sm hover:shadow-pink-100/40'
               ]"
               :style="{ animationDelay: `${index * 100}ms` }"
             >
@@ -110,12 +118,12 @@
         <!-- Bottom Section -->
         <div class="mt-6 space-y-4">
           <NuxtLink to="/reserva" class="block">
-            <button class="cta-button w-full py-4 px-6 bg-gradient-to-r from-pink-400 via-rose-400 to-orange-400 text-white font-semibold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden group transform hover:scale-105">
+            <button class="cta-button w-full py-3 px-6 bg-gradient-to-r from-pink-400 via-rose-400 to-orange-400 text-white font-medium rounded-xl shadow-lg shadow-pink-300/40 hover:shadow-xl hover:shadow-pink-300/50 transition-all duration-300 relative overflow-hidden group">
               <span class="relative z-10 flex items-center justify-center space-x-2">
-                <Icon name="lucide:calendar-heart" class="w-5 h-5 group-hover:animate-pulse" />
+                <Icon name="lucide:calendar-heart" class="w-4 h-4 group-hover:animate-pulse" />
                 <span>Reservar Cita</span>
               </span>
-              <div class="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div class="absolute inset-0 bg-gradient-to-r from-white/15 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </button>
           </NuxtLink>
           

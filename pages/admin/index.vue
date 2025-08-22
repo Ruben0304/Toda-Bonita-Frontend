@@ -1,25 +1,43 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-white via-pink-50/30 to-orange-50/20">
     <!-- Header -->
-    <header class="bg-white shadow-sm border-b border-pink-100">
+    <header class="bg-white shadow-lg border-b border-pink-100 backdrop-blur-sm">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
-          <div class="flex items-center">
-            <h1 class="text-2xl font-bold bg-gradient-to-r from-pink-500 to-orange-500 bg-clip-text text-transparent">
-              Panel de Administración
-            </h1>
-          </div>
+        <div class="flex justify-between items-center h-20">
           <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-gradient-to-r from-pink-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+              <span class="text-white font-bold text-lg">TB</span>
+            </div>
+            <div>
+              <h1 class="text-2xl font-bold bg-gradient-to-r from-pink-500 to-orange-500 bg-clip-text text-transparent">
+                Panel de Administración
+              </h1>
+              <p class="text-sm text-gray-500 font-medium">Gestión integral del salón</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-6">
+            <!-- Notifications -->
             <div class="relative">
-              <div class="flex items-center space-x-2 bg-pink-50 px-3 py-2 rounded-full">
-                <div class="w-8 h-8 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full flex items-center justify-center">
-                  <span class="text-white font-bold text-sm">TB</span>
-                </div>
-                <span class="text-gray-700 font-medium">Admin</span>
+              <button class="p-2 text-gray-400 hover:text-pink-500 transition-colors relative">
+                <Icon name="lucide:bell" class="w-6 h-6" />
+                <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
+              </button>
+            </div>
+            
+            <!-- User Profile -->
+            <div class="flex items-center space-x-3 bg-gradient-to-r from-pink-50 to-orange-50 px-4 py-2 rounded-xl border border-pink-100">
+              <div class="w-10 h-10 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full flex items-center justify-center shadow-md">
+                <Icon name="lucide:user" class="w-5 h-5 text-white" />
+              </div>
+              <div class="hidden sm:block">
+                <p class="text-sm font-semibold text-gray-700">Administrador</p>
+                <p class="text-xs text-gray-500">Sesión activa</p>
               </div>
             </div>
-            <NuxtLink to="/" class="text-gray-500 hover:text-pink-500 transition-colors">
-              🏠 Ir al sitio
+            
+            <NuxtLink to="/" class="flex items-center space-x-2 text-gray-500 hover:text-pink-500 transition-colors font-medium">
+              <Icon name="lucide:external-link" class="w-4 h-4" />
+              <span class="hidden sm:inline">Ir al sitio</span>
             </NuxtLink>
           </div>
         </div>
@@ -30,100 +48,126 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <!-- Stats Overview -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div class="bg-white rounded-2xl p-6 shadow-lg border border-pink-100">
-          <div class="flex items-center">
-            <div class="p-3 rounded-lg bg-pink-100">
-              <span class="text-2xl">📅</span>
-            </div>
-            <div class="ml-4">
-              <p class="text-sm text-gray-500">Reservas Hoy</p>
-              <p class="text-2xl font-bold text-gray-900">{{ stats.reservasHoy }}</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-2xl p-6 shadow-lg border border-orange-100">
-          <div class="flex items-center">
-            <div class="p-3 rounded-lg bg-orange-100">
-              <span class="text-2xl">⏳</span>
-            </div>
-            <div class="ml-4">
-              <p class="text-sm text-gray-500">Pendientes</p>
-              <p class="text-2xl font-bold text-gray-900">{{ stats.reservasPendientes }}</p>
+        <div class="bg-white rounded-2xl p-6 shadow-lg border border-pink-100 hover:shadow-xl transition-all duration-300 group">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <div class="p-3 rounded-xl bg-gradient-to-br from-pink-100 to-pink-200 group-hover:from-pink-200 group-hover:to-pink-300 transition-all duration-300">
+                <Icon name="lucide:calendar" class="w-6 h-6 text-pink-600" />
+              </div>
+              <div class="ml-4">
+                <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Reservas Hoy</p>
+                <p class="text-3xl font-bold text-gray-900">{{ stats.reservasHoy }}</p>
+                <p class="text-xs text-green-600 font-medium">+12% vs ayer</p>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="bg-white rounded-2xl p-6 shadow-lg border border-green-100">
-          <div class="flex items-center">
-            <div class="p-3 rounded-lg bg-green-100">
-              <span class="text-2xl">🛍️</span>
-            </div>
-            <div class="ml-4">
-              <p class="text-sm text-gray-500">Solicitudes Productos</p>
-              <p class="text-2xl font-bold text-gray-900">{{ stats.solicitudesProductos }}</p>
+        <div class="bg-white rounded-2xl p-6 shadow-lg border border-orange-100 hover:shadow-xl transition-all duration-300 group">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <div class="p-3 rounded-xl bg-gradient-to-br from-orange-100 to-orange-200 group-hover:from-orange-200 group-hover:to-orange-300 transition-all duration-300">
+                <Icon name="lucide:clock" class="w-6 h-6 text-orange-600" />
+              </div>
+              <div class="ml-4">
+                <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Pendientes</p>
+                <p class="text-3xl font-bold text-gray-900">{{ stats.reservasPendientes }}</p>
+                <p class="text-xs text-yellow-600 font-medium">Requieren atención</p>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="bg-white rounded-2xl p-6 shadow-lg border border-purple-100">
-          <div class="flex items-center">
-            <div class="p-3 rounded-lg bg-purple-100">
-              <span class="text-2xl">💰</span>
+        <div class="bg-white rounded-2xl p-6 shadow-lg border border-green-100 hover:shadow-xl transition-all duration-300 group">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <div class="p-3 rounded-xl bg-gradient-to-br from-green-100 to-green-200 group-hover:from-green-200 group-hover:to-green-300 transition-all duration-300">
+                <Icon name="lucide:shopping-bag" class="w-6 h-6 text-green-600" />
+              </div>
+              <div class="ml-4">
+                <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Solicitudes</p>
+                <p class="text-3xl font-bold text-gray-900">{{ stats.solicitudesProductos }}</p>
+                <p class="text-xs text-green-600 font-medium">Productos</p>
+              </div>
             </div>
-            <div class="ml-4">
-              <p class="text-sm text-gray-500">Ingresos Mes</p>
-              <p class="text-2xl font-bold text-gray-900">${{ stats.ingresosMes.toLocaleString() }}</p>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow-lg border border-purple-100 hover:shadow-xl transition-all duration-300 group">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <div class="p-3 rounded-xl bg-gradient-to-br from-purple-100 to-purple-200 group-hover:from-purple-200 group-hover:to-purple-300 transition-all duration-300">
+                <Icon name="lucide:dollar-sign" class="w-6 h-6 text-purple-600" />
+              </div>
+              <div class="ml-4">
+                <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Ingresos Mes</p>
+                <p class="text-3xl font-bold text-gray-900">${{ stats.ingresosMes.toLocaleString() }}</p>
+                <p class="text-xs text-green-600 font-medium">+8.5% vs mes anterior</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Quick Actions -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-          <h2 class="text-xl font-bold text-gray-900 mb-4">Acciones Rápidas</h2>
-          <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 lg:col-span-2">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-bold text-gray-900">Acciones Rápidas</h2>
+            <Icon name="lucide:zap" class="w-5 h-5 text-yellow-500" />
+          </div>
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <button @click="activeTab = 'reservas'" 
-                    class="flex items-center justify-center p-4 bg-gradient-to-r from-pink-500 to-orange-500 text-white rounded-xl hover:shadow-lg transition-all duration-300">
-              <span class="text-2xl mr-2">📅</span>
-              <span class="font-medium">Ver Reservas</span>
+                    class="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-pink-500 to-orange-500 text-white rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300">
+              <Icon name="lucide:calendar" class="w-8 h-8 mb-2 group-hover:scale-110 transition-transform" />
+              <span class="font-medium text-sm">Ver Reservas</span>
             </button>
             
             <button @click="activeTab = 'productos'" 
-                    class="flex items-center justify-center p-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl hover:shadow-lg transition-all duration-300">
-              <span class="text-2xl mr-2">🛍️</span>
-              <span class="font-medium">Solicitudes</span>
+                    class="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-purple-500 to-pink-500 text-white rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300">
+              <Icon name="lucide:shopping-bag" class="w-8 h-8 mb-2 group-hover:scale-110 transition-transform" />
+              <span class="font-medium text-sm">Solicitudes</span>
             </button>
             
             <button @click="showAddReserva = true" 
-                    class="flex items-center justify-center p-4 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-xl hover:shadow-lg transition-all duration-300">
-              <span class="text-2xl mr-2">➕</span>
-              <span class="font-medium">Nueva Reserva</span>
+                    class="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-green-500 to-teal-500 text-white rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300">
+              <Icon name="lucide:plus" class="w-8 h-8 mb-2 group-hover:scale-110 transition-transform" />
+              <span class="font-medium text-sm">Nueva Reserva</span>
             </button>
             
             <button @click="exportData" 
-                    class="flex items-center justify-center p-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl hover:shadow-lg transition-all duration-300">
-              <span class="text-2xl mr-2">📊</span>
-              <span class="font-medium">Exportar</span>
+                    class="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-blue-500 to-purple-500 text-white rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300">
+              <Icon name="lucide:download" class="w-8 h-8 mb-2 group-hover:scale-110 transition-transform" />
+              <span class="font-medium text-sm">Exportar</span>
             </button>
           </div>
         </div>
 
         <!-- Recent Activity -->
         <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-          <h2 class="text-xl font-bold text-gray-900 mb-4">Actividad Reciente</h2>
-          <div class="space-y-3">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-bold text-gray-900">Actividad Reciente</h2>
+            <Icon name="lucide:activity" class="w-5 h-5 text-blue-500" />
+          </div>
+          <div class="space-y-3 max-h-80 overflow-y-auto">
             <div v-for="activity in recentActivity" :key="activity.id" 
-                 class="flex items-center p-3 bg-gray-50 rounded-lg">
-              <div class="p-2 rounded-lg" :class="activity.bgColor">
+                 class="flex items-start p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:shadow-md transition-all duration-200">
+              <div class="p-2 rounded-lg flex-shrink-0" :class="activity.bgColor">
                 <span class="text-lg">{{ activity.icon }}</span>
               </div>
-              <div class="ml-3 flex-1">
-                <p class="text-sm font-medium text-gray-900">{{ activity.title }}</p>
-                <p class="text-xs text-gray-500">{{ activity.time }}</p>
+              <div class="ml-3 flex-1 min-w-0">
+                <p class="text-sm font-medium text-gray-900 truncate">{{ activity.title }}</p>
+                <p class="text-xs text-gray-500 mt-1 flex items-center">
+                  <Icon name="lucide:clock" class="w-3 h-3 mr-1" />
+                  {{ activity.time }}
+                </p>
               </div>
             </div>
+          </div>
+          <div class="mt-4 pt-4 border-t border-gray-200">
+            <button class="w-full text-sm text-pink-600 hover:text-pink-700 font-medium transition-colors">
+              Ver toda la actividad
+            </button>
           </div>
         </div>
       </div>

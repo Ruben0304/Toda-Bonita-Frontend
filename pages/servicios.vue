@@ -25,18 +25,22 @@
             placeholder="Buscar servicios..." 
             class="w-full pl-12 pr-4 py-3 border-2 border-pink-100 rounded-2xl focus:outline-none focus:border-pink-300 transition-colors bg-white"
           >
-          <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-pink-400 text-xl">🔍</span>
+          <Icon name="lucide:search" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-pink-400 text-xl" />
         </div>
 
         <!-- Sort Options -->
         <div class="flex space-x-3">
-          <select v-model="sortBy" class="px-4 py-2 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-300">
-            <option value="name">Nombre</option>
-            <option value="price-low">Precio: Menor a Mayor</option>
-            <option value="price-high">Precio: Mayor a Menor</option>
-            <option value="duration">Duración</option>
-            <option value="popular">Más Popular</option>
-          </select>
+          <div class="flex items-center space-x-2">
+            <Icon name="lucide:arrow-up-down" class="text-pink-500 text-lg" />
+            <select v-model="sortBy" class="px-4 py-2 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-300 bg-white">
+              <option value="name">Nombre</option>
+              <option value="price-low">Precio: Menor a Mayor</option>
+              <option value="price-high">Precio: Mayor a Menor</option>
+              <option value="duration">Duración</option>
+              <option value="popular">Más Popular</option>
+              <option value="rating">Mejor Valorados</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -101,15 +105,15 @@
             <!-- Service Details -->
             <div class="space-y-2 mb-4">
               <div class="flex items-center text-sm text-gray-500">
-                <span class="mr-2">⏱️</span>
+                <Icon name="lucide:clock" class="mr-2 text-pink-500" size="16" />
                 <span>Duración: {{ servicio.duracion }} minutos</span>
               </div>
               <div class="flex items-center text-sm text-gray-500">
-                <span class="mr-2">👥</span>
+                <Icon name="lucide:user" class="mr-2 text-pink-500" size="16" />
                 <span>Especialista: {{ servicio.especialista }}</span>
               </div>
               <div v-if="servicio.incluye" class="flex items-center text-sm text-gray-500">
-                <span class="mr-2">✨</span>
+                <Icon name="lucide:sparkles" class="mr-2 text-pink-500" size="16" />
                 <span>Incluye: {{ servicio.incluye }}</span>
               </div>
             </div>
@@ -117,9 +121,14 @@
             <!-- Rating -->
             <div class="flex items-center mb-4">
               <div class="flex text-yellow-400">
-                <span v-for="i in 5" :key="i" class="text-lg">
-                  {{ i <= servicio.rating ? '⭐' : '☆' }}
-                </span>
+                <Icon 
+                  v-for="i in 5" 
+                  :key="i" 
+                  :name="i <= servicio.rating ? 'lucide:star' : 'lucide:star'"
+                  :class="i <= servicio.rating ? 'text-yellow-400' : 'text-gray-300'"
+                  size="16"
+                  :fill="i <= servicio.rating ? 'currentColor' : 'none'"
+                />
               </div>
               <span class="text-gray-500 text-sm ml-2">({{ servicio.reviews }} reseñas)</span>
             </div>
@@ -140,15 +149,16 @@
             <div class="flex space-x-2">
               <button 
                 @click="bookService(servicio)"
-                class="flex-1 bg-gradient-to-r from-pink-500 to-orange-500 text-white py-3 px-4 rounded-xl font-medium hover:shadow-lg transition-all duration-300 hover:scale-105"
+                class="flex-1 bg-gradient-to-r from-pink-500 to-orange-500 text-white py-3 px-4 rounded-xl font-medium hover:shadow-lg transition-all duration-300 hover:scale-105 flex items-center justify-center space-x-2"
               >
-                📅 Reservar
+                <Icon name="lucide:calendar" size="18" />
+                <span>Reservar</span>
               </button>
               <button 
                 @click="viewService(servicio)"
-                class="px-4 py-3 border border-pink-200 rounded-xl text-pink-600 hover:bg-pink-50 transition-colors"
+                class="px-4 py-3 border border-pink-200 rounded-xl text-pink-600 hover:bg-pink-50 transition-colors flex items-center justify-center"
               >
-                👁️
+                <Icon name="lucide:eye" size="18" />
               </button>
             </div>
           </div>
@@ -174,12 +184,14 @@
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
           <NuxtLink to="/contacto" 
-                    class="bg-white text-pink-600 py-3 px-6 rounded-xl font-medium hover:shadow-lg transition-all duration-300 hover:scale-105">
-            💬 Contáctanos
+                    class="bg-white text-pink-600 py-3 px-6 rounded-xl font-medium hover:shadow-lg transition-all duration-300 hover:scale-105 flex items-center justify-center space-x-2">
+            <Icon name="lucide:message-circle" size="18" />
+            <span>Contáctanos</span>
           </NuxtLink>
           <NuxtLink to="/reserva" 
-                    class="border-2 border-white text-white py-3 px-6 rounded-xl font-medium hover:bg-white hover:text-pink-600 transition-all duration-300">
-            📞 Llamar Ahora
+                    class="border-2 border-white text-white py-3 px-6 rounded-xl font-medium hover:bg-white hover:text-pink-600 transition-all duration-300 flex items-center justify-center space-x-2">
+            <Icon name="lucide:phone" size="18" />
+            <span>Llamar Ahora</span>
           </NuxtLink>
         </div>
       </div>
@@ -203,36 +215,121 @@ const itemsPerPage = 9
 
 const categorias = [
   'Todos',
-  'Cuidado Facial',
-  'Manicure & Pedicure',
+  'Peluquería',
+  'Tratamientos Faciales',
+  'Manicura',
   'Masajes',
-  'Maquillaje',
-  'Depilación',
-  'Tratamientos Corporales'
+  'Depilaciones',
+  'Extensiones de Pestañas',
+  'Mascarillas Personalizadas'
 ]
 
 const servicios = ref([
   {
     id: 1,
-    nombre: 'Facial Hidratante Profundo',
-    descripcion: 'Tratamiento facial completo con limpieza, exfoliación, mascarilla hidratante y masaje facial relajante. Perfecto para pieles secas y deshidratadas.',
-    precio: 80000,
-    categoria: 'Cuidado Facial',
-    imagen: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400&h=300&fit=crop',
-    duracion: 90,
-    especialista: 'Ana García',
-    incluye: 'Limpieza, mascarilla, hidratación',
+    nombre: 'Botox Capilar',
+    descripcion: 'Tratamiento reconstructivo que devuelve la vitalidad y brillo natural al cabello. Repara fibras capilares dañadas y sella las cutículas.',
+    precio: 95000,
+    categoria: 'Peluquería',
+    imagen: '/img/servicio_peluqueria.jpg',
+    duracion: 120,
+    especialista: 'Diana Silva',
+    incluye: 'Lavado, aplicación botox, secado',
     rating: 5,
-    reviews: 124,
-    icono: '✨'
+    reviews: 156,
+    icono: '💉'
   },
   {
     id: 2,
-    nombre: 'Manicure Clásico',
-    descripcion: 'Cuidado completo de uñas con limpieza, corte, limado, cutículas y esmaltado. Incluye hidratación de manos.',
+    nombre: 'Keratina',
+    descripcion: 'Tratamiento alisador y nutritivo que reduce el frizz, suaviza el cabello y facilita el peinado diario.',
+    precio: 120000,
+    categoria: 'Peluquería',
+    imagen: '/img/servicio_peluqueria2.jpg',
+    duracion: 180,
+    especialista: 'Valentina Torres',
+    incluye: 'Keratina profesional, secado, planchado',
+    rating: 5,
+    reviews: 134,
+    icono: '🧬'
+  },
+  {
+    id: 3,
+    nombre: 'Mechas',
+    descripcion: 'Técnicas modernas de coloración: mechas, balayage, babylights. Ilumina tu cabello con reflejos naturales.',
+    precio: 85000,
+    categoria: 'Peluquería',
+    imagen: '/img/servicio_peluqueria3.jpg',
+    duracion: 150,
+    especialista: 'Carlos Mendoza',
+    incluye: 'Decoloración, tinte, tratamiento',
+    rating: 5,
+    reviews: 189,
+    icono: '🎨'
+  },
+  {
+    id: 4,
+    nombre: 'Tinte',
+    descripcion: 'Coloración completa con productos profesionales. Cambio de color total o cobertura de canas.',
+    precio: 65000,
+    categoria: 'Peluquería',
+    imagen: '/img/servicio_peluqueria4.jpg',
+    duracion: 90,
+    especialista: 'Isabella Restrepo',
+    incluye: 'Tinte profesional, lavado, secado',
+    rating: 4,
+    reviews: 98,
+    icono: '🌈'
+  },
+  {
+    id: 5,
+    nombre: 'Alisado',
+    descripcion: 'Alisado progresivo con productos naturales que reduce el volumen y facilita el peinado diario.',
+    precio: 150000,
+    categoria: 'Peluquería',
+    imagen: '/img/servicio_unas.jpg',
+    duracion: 240,
+    especialista: 'Camila Vega',
+    incluye: 'Alisado progresivo, tratamiento',
+    rating: 4,
+    reviews: 87,
+    icono: '💇‍♀️'
+  },
+  {
+    id: 6,
+    nombre: 'Extracción de Tinte Negro',
+    descripcion: 'Proceso especializado para remover tintes oscuros y preparar el cabello para nuevos colores.',
+    precio: 180000,
+    categoria: 'Peluquería',
+    imagen: '/img/servicio_peluqueria.jpg',
+    duracion: 300,
+    especialista: 'Ana García',
+    incluye: 'Decoloración, tratamiento reparador',
+    rating: 4,
+    reviews: 45,
+    icono: '🔬'
+  },
+  {
+    id: 7,
+    nombre: 'Extensiones de Pestañas',
+    descripcion: 'Extensiones clásicas o volumen para una mirada impactante. Pestañas más largas y densas de forma natural.',
+    precio: 80000,
+    categoria: 'Extensiones de Pestañas',
+    imagen: '/img/servicio_unas.jpg',
+    duracion: 120,
+    especialista: 'Sofía Martín',
+    incluye: 'Aplicación, diseño personalizado',
+    rating: 5,
+    reviews: 203,
+    icono: '👁️'
+  },
+  {
+    id: 8,
+    nombre: 'Manicura Clásica',
+    descripcion: 'Cuidado completo de uñas con limpieza, corte, limado, cutículas y esmaltado profesional.',
     precio: 45000,
-    categoria: 'Manicure & Pedicure',
-    imagen: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&h=300&fit=crop',
+    categoria: 'Manicura',
+    imagen: '/img/servicio_unas1.jpg',
     duracion: 60,
     especialista: 'María López',
     incluye: 'Limpieza, esmaltado, hidratación',
@@ -241,13 +338,27 @@ const servicios = ref([
     icono: '💅'
   },
   {
-    id: 3,
-    nombre: 'Masaje Relajante Sueco',
-    descripcion: 'Masaje corporal completo que combina movimientos suaves y profundos para aliviar tensiones y promover la relajación total.',
+    id: 9,
+    nombre: 'Manicura Semipermanente',
+    descripcion: 'Manicura de larga duración con esmalte gel que mantiene el brillo hasta 3 semanas.',
+    precio: 65000,
+    categoria: 'Manicura',
+    imagen: '/img/servicio_unas2.jpg',
+    duracion: 75,
+    especialista: 'Laura Torres',
+    incluye: 'Preparación, gel, curado LED',
+    rating: 5,
+    reviews: 167,
+    icono: '✨'
+  },
+  {
+    id: 10,
+    nombre: 'Masaje Relajante',
+    descripcion: 'Masaje corporal completo que combina movimientos suaves y profundos para aliviar tensiones.',
     precio: 120000,
     categoria: 'Masajes',
-    imagen: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400&h=300&fit=crop',
-    duracion: 120,
+    imagen: '/img/servicio_peluqueria2.jpg',
+    duracion: 90,
     especialista: 'Carmen Ruiz',
     incluye: 'Aceites aromáticos, música relajante',
     rating: 5,
@@ -255,42 +366,14 @@ const servicios = ref([
     icono: '💆‍♀️'
   },
   {
-    id: 4,
-    nombre: 'Maquillaje para Eventos',
-    descripcion: 'Maquillaje profesional para ocasiones especiales. Incluye consulta de estilo y prueba previa.',
-    precio: 100000,
-    categoria: 'Maquillaje',
-    imagen: 'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=400&h=300&fit=crop',
-    duracion: 90,
-    especialista: 'Sofía Martín',
-    incluye: 'Consulta, prueba, maquillaje',
-    rating: 5,
-    reviews: 203,
-    icono: '💄'
-  },
-  {
-    id: 5,
-    nombre: 'Pedicure Spa Completo',
-    descripcion: 'Tratamiento relajante para pies que incluye baño de sales, exfoliación, masaje y esmaltado profesional.',
-    precio: 55000,
-    categoria: 'Manicure & Pedicure',
-    imagen: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=300&fit=crop',
-    duracion: 75,
-    especialista: 'Laura Torres',
-    incluye: 'Baño de sales, exfoliación, masaje',
-    rating: 4,
-    reviews: 91,
-    icono: '🦶'
-  },
-  {
-    id: 6,
+    id: 11,
     nombre: 'Depilación con Cera',
-    descripcion: 'Depilación profesional con cera de alta calidad. Zonas disponibles: piernas, brazos, axilas, cejas.',
+    descripcion: 'Depilación profesional con cera de alta calidad. Todas las zonas disponibles: piernas, brazos, axilas, cejas.',
     precio: 35000,
     precioOriginal: 45000,
     promocion: '22% OFF',
-    categoria: 'Depilación',
-    imagen: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=400&h=300&fit=crop',
+    categoria: 'Depilaciones',
+    imagen: '/img/servicio_peluqueria4.jpg',
     duracion: 45,
     especialista: 'Patricia Vega',
     incluye: 'Cera profesional, cuidado post',
@@ -299,46 +382,32 @@ const servicios = ref([
     icono: '🪒'
   },
   {
-    id: 7,
-    nombre: 'Facial Anti-edad',
-    descripcion: 'Tratamiento facial especializado para reducir líneas de expresión y mejorar la elasticidad de la piel.',
-    precio: 150000,
-    categoria: 'Cuidado Facial',
-    imagen: 'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=400&h=300&fit=crop',
-    duracion: 120,
+    id: 12,
+    nombre: 'Tratamientos Faciales',
+    descripcion: 'Limpieza facial profunda, hidratación y tratamientos anti-edad personalizados según tu tipo de piel.',
+    precio: 80000,
+    categoria: 'Tratamientos Faciales',
+    imagen: '/img/servicio_unas3.jpg',
+    duracion: 90,
     especialista: 'Dr. Elena Ramírez',
-    incluye: 'Suero anti-edad, masaje facial',
+    incluye: 'Limpieza, mascarilla, hidratación',
     rating: 5,
-    reviews: 78,
+    reviews: 124,
     icono: '🌟'
   },
   {
-    id: 8,
-    nombre: 'Masaje de Piedras Calientes',
-    descripcion: 'Masaje terapéutico con piedras volcánicas calientes que ayuda a relajar músculos profundos y aliviar el estrés.',
-    precio: 180000,
-    categoria: 'Masajes',
-    imagen: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=400&h=300&fit=crop',
-    duracion: 90,
-    especialista: 'Ricardo Silva',
-    incluye: 'Piedras volcánicas, aceites',
-    rating: 5,
-    reviews: 112,
-    icono: '🔥'
-  },
-  {
-    id: 9,
-    nombre: 'Tratamiento Corporal Reafirmante',
-    descripcion: 'Tratamiento corporal completo para reafirmar y tonificar la piel. Incluye exfoliación y envoltura corporal.',
-    precio: 200000,
-    categoria: 'Tratamientos Corporales',
-    imagen: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop',
-    duracion: 150,
+    id: 13,
+    nombre: 'Mascarillas Personalizadas',
+    descripcion: 'Mascarillas faciales diseñadas específicamente para tu tipo de piel con ingredientes naturales y activos.',
+    precio: 90000,
+    categoria: 'Mascarillas Personalizadas',
+    imagen: '/img/servicio_peluqueria.jpg',
+    duracion: 60,
     especialista: 'Isabella Morales',
-    incluye: 'Exfoliación, envoltura, masaje',
-    rating: 4,
-    reviews: 45,
-    icono: '🏃‍♀️'
+    incluye: 'Análisis piel, mascarilla personalizada',
+    rating: 5,
+    reviews: 78,
+    icono: '🧴'
   }
 ])
 
@@ -350,7 +419,8 @@ const serviciosFiltrados = computed(() => {
     filtered = filtered.filter(s => 
       s.nombre.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
       s.descripcion.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
-      s.especialista.toLowerCase().includes(searchTerm.value.toLowerCase())
+      s.especialista.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
+      s.categoria.toLowerCase().includes(searchTerm.value.toLowerCase())
     )
   }
 
@@ -358,6 +428,7 @@ const serviciosFiltrados = computed(() => {
   if (filtroCategoria.value && filtroCategoria.value !== 'Todos') {
     filtered = filtered.filter(s => s.categoria === filtroCategoria.value)
   }
+
 
   // Sort services
   switch (sortBy.value) {
@@ -372,6 +443,9 @@ const serviciosFiltrados = computed(() => {
       break
     case 'popular':
       filtered.sort((a, b) => b.reviews - a.reviews)
+      break
+    case 'rating':
+      filtered.sort((a, b) => b.rating - a.rating)
       break
     default:
       filtered.sort((a, b) => a.nombre.localeCompare(b.nombre))

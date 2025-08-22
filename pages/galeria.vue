@@ -1,773 +1,738 @@
 <template>
-  <div class="gallery-page">
-    <!-- Hero Section -->
-    <section class="hero-gallery relative h-screen flex items-center justify-center overflow-hidden">
-      <div class="absolute inset-0 bg-gradient-to-br from-pink-600/20 via-orange-500/10 to-purple-600/20"></div>
-      
-      <!-- Background Image with Parallax -->
-      <div 
-        class="absolute inset-0 bg-cover bg-center transform"
-        :style="{ transform: `translateY(${scrollY * 0.5}px)` }"
-        style="background-image: url('https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1920&h=1080&fit=crop&crop=center')"
-      ></div>
-      
-      <!-- Content -->
-      <div class="relative z-10 text-center text-white">
-        <h1 
-          class="text-7xl lg:text-9xl font-bold mb-6 tracking-tight"
-          :class="{ 'animate-title': isVisible.hero }"
-        >
-          <span class="bg-gradient-to-r from-white via-pink-100 to-orange-100 bg-clip-text text-transparent">
-            Galería
-          </span>
-        </h1>
-        <p 
-          class="text-2xl lg:text-3xl mb-8 opacity-90"
-          :class="{ 'animate-subtitle': isVisible.hero }"
-        >
-          Nuestros Trabajos en Acción
-        </p>
-        <div 
-          class="animate-bounce-custom"
-          :class="{ 'animate-arrow': isVisible.hero }"
-        >
-          <div class="w-8 h-8 border-2 border-white transform rotate-45 translate-x-1"></div>
+  <div class="relative min-h-screen bg-gradient-to-br from-white via-pink-50/20 to-orange-50/10 overflow-x-hidden">
+    <!-- Three.js Background Canvas -->
+    <canvas 
+      ref="canvasRef" 
+      class="fixed inset-0 z-0 w-full h-full lg:left-72"
+      :style="{ opacity: canvasOpacity }"
+    />
+    
+    <!-- Progress Indicator -->
+    <div class="fixed bottom-8 left-1/2 lg:left-1/2 lg:ml-36 transform -translate-x-1/2 z-50">
+      <div class="flex items-center bg-black/20 backdrop-blur-sm rounded-full px-6 py-3">
+        <span class="text-white/90 text-sm mr-4 font-medium">
+          {{ currentPhotoIndex + 2 }} / {{ totalSections }}
+        </span>
+        <div class="w-32 h-1 bg-white/30 rounded-full overflow-hidden">
+          <div 
+            class="h-full bg-gradient-to-r from-pink-500 to-orange-500 rounded-full transition-all duration-700 ease-out"
+            :style="{ width: progressPercentage + '%' }"
+          ></div>
         </div>
       </div>
-    </section>
-
-    <!-- Gallery Sections -->
-    <div class="gallery-content">
-      
-      <!-- Transformaciones Scroll Section -->
-      <section class="scroll-section min-h-screen flex items-center justify-center py-20">
-        <div class="max-w-7xl mx-auto px-6">
-          <div 
-            class="text-center mb-16"
-            :class="{ 'animate-fade-in-up': isVisible.transformaciones }"
-          >
-            <h2 class="text-6xl font-bold mb-6 bg-gradient-to-r from-pink-600 to-orange-500 bg-clip-text text-transparent">
-              Transformaciones
-            </h2>
-            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-              Cada cliente es una obra de arte única
-            </p>
-          </div>
-
-          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div 
-              v-for="(item, index) in galleryItems.transformaciones"
-              :key="index"
-              class="gallery-item"
-              :class="{ 
-                'animate-slide-in-left': isVisible.transformaciones && index % 2 === 0,
-                'animate-slide-in-right': isVisible.transformaciones && index % 2 === 1
-              }"
-              :style="{ animationDelay: `${index * 200}ms` }"
-              @click="openLightbox(item, 'transformaciones', index)"
-            >
-              <div class="relative overflow-hidden rounded-3xl group cursor-pointer">
-                <img 
-                  :src="item.image" 
-                  :alt="item.title"
-                  class="w-full h-80 object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div class="absolute bottom-0 left-0 right-0 p-6 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                  <h3 class="text-xl font-bold mb-2">{{ item.title }}</h3>
-                  <p class="text-sm opacity-90">{{ item.description }}</p>
-                </div>
-                <!-- Zoom Icon -->
-                <div class="absolute top-4 right-4 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <span class="text-white text-lg">🔍</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Servicios Scroll Section -->
-      <section class="scroll-section min-h-screen flex items-center justify-center py-20 bg-gradient-to-br from-pink-50/30 to-orange-50/20">
-        <div class="max-w-7xl mx-auto px-6">
-          <div 
-            class="text-center mb-16"
-            :class="{ 'animate-zoom-in': isVisible.servicios }"
-          >
-            <h2 class="text-6xl font-bold mb-6 bg-gradient-to-r from-pink-600 to-orange-500 bg-clip-text text-transparent">
-              En Acción
-            </h2>
-            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-              Mira nuestros servicios siendo realizados
-            </p>
-          </div>
-
-          <div class="grid md:grid-cols-2 gap-12 items-center">
-            <div 
-              class="space-y-8"
-              :class="{ 'animate-slide-in-left': isVisible.servicios }"
-            >
-              <div 
-                v-for="(item, index) in galleryItems.servicios"
-                :key="index"
-                class="service-item flex items-center space-x-4 p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 cursor-pointer"
-                :style="{ animationDelay: `${index * 150}ms` }"
-                @click="openLightbox(item, 'servicios', index)"
-              >
-                <div class="w-16 h-16 bg-gradient-to-br from-pink-500 to-orange-500 rounded-2xl flex items-center justify-center text-2xl text-white">
-                  {{ item.icon }}
-                </div>
-                <div class="flex-1">
-                  <h3 class="text-lg font-bold text-gray-800">{{ item.title }}</h3>
-                  <p class="text-gray-600">{{ item.description }}</p>
-                </div>
-              </div>
-            </div>
-
-            <div 
-              class="relative"
-              :class="{ 'animate-slide-in-right': isVisible.servicios }"
-            >
-              <div class="masonry-grid">
-                <div 
-                  v-for="(item, index) in galleryItems.servicios"
-                  :key="index"
-                  class="masonry-item group cursor-pointer"
-                  :class="{ 'animate-fade-in': isVisible.servicios }"
-                  :style="{ animationDelay: `${index * 100}ms` }"
-                  @click="openLightbox(item, 'servicios', index)"
-                >
-                  <img 
-                    :src="item.image" 
-                    :alt="item.title"
-                    class="w-full h-full object-cover rounded-2xl transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Productos Showcase -->
-      <section class="scroll-section min-h-screen flex items-center justify-center py-20">
-        <div class="max-w-7xl mx-auto px-6">
-          <div 
-            class="text-center mb-16"
-            :class="{ 'animate-fade-in-up': isVisible.productos }"
-          >
-            <h2 class="text-6xl font-bold mb-6 bg-gradient-to-r from-pink-600 to-orange-500 bg-clip-text text-transparent">
-              Productos Premium
-            </h2>
-            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-              Los mejores productos para tu belleza
-            </p>
-          </div>
-
-          <div class="product-showcase">
-            <div 
-              v-for="(item, index) in galleryItems.productos"
-              :key="index"
-              class="product-card group cursor-pointer"
-              :class="{ 
-                'animate-scale-in': isVisible.productos,
-                'animate-delay-1': index === 1,
-                'animate-delay-2': index === 2,
-                'animate-delay-3': index === 3
-              }"
-              @click="openLightbox(item, 'productos', index)"
-            >
-              <div class="relative overflow-hidden rounded-3xl bg-white shadow-xl">
-                <div class="aspect-square overflow-hidden">
-                  <img 
-                    :src="item.image" 
-                    :alt="item.title"
-                    class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-2"
-                  />
-                </div>
-                <div class="p-6">
-                  <div class="flex items-center justify-between mb-2">
-                    <span class="text-xs font-semibold uppercase tracking-wider text-pink-500 bg-pink-50 px-3 py-1 rounded-full">
-                      {{ item.category }}
-                    </span>
-                    <span class="text-2xl">{{ item.icon }}</span>
-                  </div>
-                  <h3 class="text-lg font-bold mb-2">{{ item.title }}</h3>
-                  <p class="text-gray-600 text-sm mb-4">{{ item.description }}</p>
-                  <div class="flex items-center justify-between">
-                    <span class="text-2xl font-bold bg-gradient-to-r from-pink-500 to-orange-500 bg-clip-text text-transparent">
-                      {{ item.price }}
-                    </span>
-                    <button class="p-2 bg-gradient-to-r from-pink-500 to-orange-500 text-white rounded-full hover:shadow-lg transform hover:scale-110 transition-all duration-300">
-                      🛒
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Ambiente del Salón -->
-      <section class="scroll-section min-h-screen flex items-center justify-center py-20 bg-gradient-to-br from-purple-50/30 to-pink-50/20">
-        <div class="max-w-7xl mx-auto px-6">
-          <div 
-            class="text-center mb-16"
-            :class="{ 'animate-fade-in-up': isVisible.ambiente }"
-          >
-            <h2 class="text-6xl font-bold mb-6 bg-gradient-to-r from-pink-600 to-orange-500 bg-clip-text text-transparent">
-              Nuestro Ambiente
-            </h2>
-            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-              Un espacio diseñado para tu relajación y belleza
-            </p>
-          </div>
-
-          <div class="ambiente-grid">
-            <div 
-              v-for="(item, index) in galleryItems.ambiente"
-              :key="index"
-              class="ambiente-item group cursor-pointer"
-              :class="{ 'animate-reveal': isVisible.ambiente }"
-              :style="{ animationDelay: `${index * 300}ms` }"
-              @click="openLightbox(item, 'ambiente', index)"
-            >
-              <div class="relative overflow-hidden rounded-3xl">
-                <img 
-                  :src="item.image" 
-                  :alt="item.title"
-                  class="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110"
-                />
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div class="absolute bottom-0 left-0 right-0 p-6 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                  <h3 class="text-xl font-bold mb-2">{{ item.title }}</h3>
-                  <p class="text-sm opacity-90">{{ item.description }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
 
-    <!-- Lightbox Modal -->
-    <div 
-      v-if="lightbox.isOpen"
-      class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
-      @click="closeLightbox"
-    >
-      <div class="relative max-w-4xl max-h-[90vh] m-4">
-        <button 
-          @click="closeLightbox"
-          class="absolute -top-12 right-0 text-white text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-colors"
-        >
-          ✕
-        </button>
+    <!-- Section Title Indicator -->
+    <div class="fixed top-8 right-8 z-50">
+      <div class="bg-black/20 backdrop-blur-sm rounded-full px-6 py-3 text-white/90 text-sm font-medium">
+        {{ currentSection.title }}
+      </div>
+    </div>
+
+    <!-- Main Photo Container - Respects sidebar -->
+    <div class="fixed inset-0 lg:left-72 z-10">
+      <!-- Intro Section -->
+      <section 
+        class="h-full flex items-center justify-center relative overflow-hidden transition-all duration-1000"
+        :class="{ 
+          'opacity-100': currentPhotoIndex === -1, 
+          'opacity-0 pointer-events-none': currentPhotoIndex !== -1 
+        }"
+      >
+        <!-- Background Image -->
+        <div class="absolute inset-0">
+          <img 
+            src="/img/fondo.jpg" 
+            alt="Nuestra Historia"
+            class="w-full h-full object-cover filter blur-sm"
+          />
+          <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
+        </div>
         
-        <div class="bg-white rounded-3xl overflow-hidden shadow-2xl max-h-[90vh] overflow-y-auto">
-          <div class="aspect-video">
+        <div class="relative z-10 text-center max-w-4xl mx-auto px-6">
+          <h1 class="text-6xl lg:text-8xl font-bold mb-8 text-white drop-shadow-lg">
+            <span class="block mb-4">Nuestra</span>
+            <span class="bg-gradient-to-r from-pink-400 via-pink-500 to-orange-500 bg-clip-text text-transparent drop-shadow-lg">
+              Historia
+            </span>
+          </h1>
+          <p class="text-xl lg:text-2xl text-white/90 mb-12 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
+            Cada transformación cuenta una historia única de belleza, confianza y transformación personal
+          </p>
+          <div class="flex flex-col items-center animate-bounce">
+            <div class="text-white/70 text-lg mb-4 font-medium drop-shadow-md">Descubre nuestro viaje</div>
+            <div class="w-8 h-12 border-2 border-white/50 rounded-full flex justify-center relative overflow-hidden backdrop-blur-sm bg-white/10">
+              <div class="w-2 h-4 bg-white/70 rounded-full mt-2 animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Photo Gallery Container -->
+      <div 
+        v-for="(photo, index) in allPhotos" 
+        :key="index"
+        class="absolute inset-0 transition-all duration-1000 ease-in-out"
+        :class="{
+          'opacity-100': currentPhotoIndex === index,
+          'opacity-0 pointer-events-none': currentPhotoIndex !== index
+        }"
+        :style="{
+          transform: currentPhotoIndex === index ? 'translateX(0%) scale(1)' : 
+                     index > currentPhotoIndex ? 'translateX(100%) scale(0.9)' : 'translateX(-100%) scale(0.9)'
+        }"
+      >
+        <!-- Background Image with Parallax -->
+        <div class="absolute inset-0 overflow-hidden">
+          <div 
+            :ref="el => setImageRef(el, index)"
+            class="w-full h-full transform transition-transform duration-2000 ease-out"
+            :style="{ 
+              transform: currentPhotoIndex === index ? 'scale(1)' : 'scale(1.1)',
+            }"
+          >
             <img 
-              :src="lightbox.item?.image" 
-              :alt="lightbox.item?.title"
+              :src="photo.main" 
+              :alt="photo.title"
               class="w-full h-full object-cover"
             />
           </div>
-          <div class="p-8">
-            <h3 class="text-3xl font-bold mb-4 bg-gradient-to-r from-pink-600 to-orange-500 bg-clip-text text-transparent">
-              {{ lightbox.item?.title }}
-            </h3>
-            <p class="text-gray-600 text-lg mb-6">{{ lightbox.item?.description }}</p>
-            
-            <!-- Navigation -->
-            <div class="flex justify-between items-center">
-              <button 
-                @click="previousImage"
-                class="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-pink-500 to-orange-500 text-white rounded-full hover:shadow-lg transition-all"
-              >
-                <span>←</span>
-                <span>Anterior</span>
-              </button>
-              
-              <span class="text-gray-500">
-                {{ lightbox.currentIndex + 1 }} / {{ currentGalleryItems.length }}
-              </span>
-              
-              <button 
-                @click="nextImage"
-                class="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-pink-500 to-orange-500 text-white rounded-full hover:shadow-lg transition-all"
-              >
-                <span>Siguiente</span>
-                <span>→</span>
-              </button>
+          <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-black/70"></div>
+        </div>
+
+        <!-- Content Overlay -->
+        <div class="relative z-10 h-full flex items-center justify-center">
+          <div class="max-w-4xl mx-auto px-6 text-center">
+            <div 
+              class="transform transition-all duration-1000"
+              :class="{
+                'translate-y-0 opacity-100': currentPhotoIndex === index,
+                'translate-y-10 opacity-0': currentPhotoIndex !== index
+              }"
+              :style="{ transitionDelay: currentPhotoIndex === index ? '300ms' : '0ms' }"
+            >
+              <!-- Section Title (only on first photo of each section) -->
+              <div v-if="photo.isFirstInSection" class="mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full text-white text-xl font-bold mb-6 shadow-lg transform transition-all duration-700"
+                  :class="{
+                    'scale-100 rotate-0': currentPhotoIndex === index,
+                    'scale-0 rotate-45': currentPhotoIndex !== index
+                  }"
+                  :style="{ transitionDelay: currentPhotoIndex === index ? '500ms' : '0ms' }">
+                  <span>{{ photo.sectionNumber }}</span>
+                </div>
+                <h2 class="text-4xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-pink-400 to-orange-400 bg-clip-text text-transparent">
+                  {{ photo.sectionTitle }}
+                </h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-pink-500 to-orange-500 mx-auto rounded-full mb-8 transform transition-all duration-700"
+                  :class="{
+                    'scale-x-100': currentPhotoIndex === index,
+                    'scale-x-0': currentPhotoIndex !== index
+                  }"
+                  :style="{ transitionDelay: currentPhotoIndex === index ? '600ms' : '0ms' }"></div>
+              </div>
+
+              <!-- Photo Content -->
+              <div class="text-white">
+                <h3 class="text-3xl lg:text-5xl font-bold mb-6 text-white transform transition-all duration-700"
+                  :class="{
+                    'translate-x-0 opacity-100': currentPhotoIndex === index,
+                    'translate-x-10 opacity-0': currentPhotoIndex !== index
+                  }"
+                  :style="{ transitionDelay: currentPhotoIndex === index ? '700ms' : '0ms' }">
+                  {{ photo.title }}
+                </h3>
+                <p class="text-lg lg:text-xl text-white/90 mb-6 max-w-2xl mx-auto leading-relaxed transform transition-all duration-700"
+                  :class="{
+                    'translate-y-0 opacity-100': currentPhotoIndex === index,
+                    'translate-y-5 opacity-0': currentPhotoIndex !== index
+                  }"
+                  :style="{ transitionDelay: currentPhotoIndex === index ? '800ms' : '0ms' }">
+                  {{ photo.description }}
+                </p>
+                <div class="inline-flex items-center bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full transform transition-all duration-700"
+                  :class="{
+                    'scale-100 opacity-100': currentPhotoIndex === index,
+                    'scale-90 opacity-0': currentPhotoIndex !== index
+                  }"
+                  :style="{ transitionDelay: currentPhotoIndex === index ? '900ms' : '0ms' }">
+                  <div class="w-3 h-3 bg-pink-400 rounded-full mr-3 animate-pulse"></div>
+                  <span class="text-pink-200 font-medium">{{ photo.category }}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- Timeline Section -->
+      <div 
+        class="absolute inset-0 transition-all duration-1000"
+        :class="{
+          'opacity-100': showTimeline,
+          'opacity-0 pointer-events-none': !showTimeline
+        }"
+      >
+        <div class="h-full bg-gradient-to-b from-white to-pink-50/30 py-20 relative overflow-hidden flex items-center">
+          <div class="absolute inset-0 opacity-5">
+            <div class="absolute inset-0" style="background-image: radial-gradient(circle at 30% 70%, var(--pink-pastel) 0%, transparent 50%), radial-gradient(circle at 70% 30%, var(--coral) 0%, transparent 50%);"></div>
+          </div>
+          
+          <div class="relative z-10 max-w-4xl mx-auto px-6 w-full">
+            <div class="text-center mb-20">
+              <h2 class="text-5xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-pink-600 to-orange-500 bg-clip-text text-transparent">
+                Nuestra Evolución
+              </h2>
+              <div class="w-32 h-1 bg-gradient-to-r from-pink-500 to-orange-500 mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Current Timeline Item -->
+            <div 
+              v-if="currentTimelineItem"
+              class="flex items-center justify-center"
+              :class="currentTimelineIndex % 2 === 0 ? 'flex-row' : 'flex-row-reverse'"
+            >
+              <!-- Image -->
+              <div class="w-1/2 px-8">
+                <div class="aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl transform transition-all duration-1000"
+                  :class="{
+                    'scale-100 opacity-100': showTimeline,
+                    'scale-95 opacity-0': !showTimeline
+                  }">
+                  <img 
+                    :src="currentTimelineItem.image" 
+                    :alt="currentTimelineItem.title"
+                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                  />
+                </div>
+              </div>
+
+              <!-- Timeline Line -->
+              <div class="flex-shrink-0 relative">
+                <div class="w-1 h-32 bg-gradient-to-b from-pink-500 to-orange-500 mx-auto transform transition-all duration-1000"
+                  :class="{
+                    'scale-y-100': showTimeline,
+                    'scale-y-0': !showTimeline
+                  }"
+                  :style="{ transitionDelay: '300ms' }"></div>
+                <div class="absolute top-1/2 transform -translate-y-1/2 w-6 h-6 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full border-4 border-white shadow-lg -translate-x-2.5 transition-all duration-1000"
+                  :class="{
+                    'scale-100 opacity-100': showTimeline,
+                    'scale-0 opacity-0': !showTimeline
+                  }"
+                  :style="{ transitionDelay: '500ms' }"></div>
+              </div>
+
+              <!-- Content -->
+              <div class="w-1/2 px-8">
+                <div class="transform transition-all duration-1000"
+                  :class="{
+                    'translate-x-0 opacity-100': showTimeline,
+                    'translate-x-10 opacity-0': !showTimeline && currentTimelineIndex % 2 === 0,
+                    '-translate-x-10 opacity-0': !showTimeline && currentTimelineIndex % 2 === 1
+                  }"
+                  :style="{ transitionDelay: '700ms' }">
+                  <div class="text-pink-500 font-bold text-lg mb-2">{{ currentTimelineItem.year }}</div>
+                  <h3 class="text-3xl font-bold text-gray-800 mb-4">{{ currentTimelineItem.title }}</h3>
+                  <p class="text-gray-600 text-lg leading-relaxed">{{ currentTimelineItem.description }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Timeline Navigation Dots -->
+            <div class="flex justify-center mt-16 space-x-4">
+              <div 
+                v-for="(milestone, index) in timelineMilestones" 
+                :key="index"
+                class="w-3 h-3 rounded-full transition-all duration-300 cursor-pointer"
+                :class="{
+                  'bg-gradient-to-r from-pink-500 to-orange-500 scale-125': currentTimelineIndex === index,
+                  'bg-pink-200 hover:bg-pink-300': currentTimelineIndex !== index
+                }"
+                @click="setTimelineItem(index)"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA Section -->
+      <div 
+        class="absolute inset-0 transition-all duration-1000"
+        :class="{
+          'opacity-100': showCTA,
+          'opacity-0 pointer-events-none': !showCTA
+        }"
+      >
+        <div class="h-full bg-gradient-to-br from-pink-500 via-pink-600 to-orange-500 relative overflow-hidden flex items-center justify-center">
+          <div class="absolute inset-0 bg-black/10"></div>
+          <div class="absolute inset-0">
+            <div class="absolute top-20 left-20 w-32 h-32 bg-white/10 rounded-full animate-pulse"></div>
+            <div class="absolute bottom-32 right-32 w-20 h-20 bg-white/10 rounded-full animate-pulse delay-1000"></div>
+            <div class="absolute top-1/2 left-10 w-16 h-16 bg-white/10 rounded-full animate-pulse delay-500"></div>
+          </div>
+          
+          <div class="relative z-10 max-w-4xl mx-auto px-6 text-center transform transition-all duration-1000"
+            :class="{
+              'scale-100 opacity-100': showCTA,
+              'scale-95 opacity-0': !showCTA
+            }">
+            <h2 class="text-5xl lg:text-6xl font-bold text-white mb-8">
+              ¿Lista para tu<br>Transformación?
+            </h2>
+            <p class="text-xl lg:text-2xl text-white/90 mb-12 max-w-2xl mx-auto">
+              Únete a nuestras clientas satisfechas y descubre tu mejor versión
+            </p>
+            
+            <NuxtLink to="/">
+              <button class="bg-white text-pink-600 font-bold px-12 py-4 rounded-full text-lg hover:bg-gray-50 transition-all duration-300 hover:scale-105 shadow-xl">
+                Reservar Cita
+              </button>
+            </NuxtLink>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll Content - Creates the scrollable height -->
+    <div class="relative z-0">
+      <!-- Intro scroll area -->
+      <section class="h-screen"></section>
+      
+      <!-- Photo scroll areas -->
+      <section 
+        v-for="(photo, index) in allPhotos" 
+        :key="`scroll-${index}`"
+        class="h-screen"
+        :data-photo="index"
+      ></section>
+      
+      <!-- Timeline scroll areas -->
+      <section 
+        v-for="(milestone, index) in timelineMilestones" 
+        :key="`timeline-scroll-${index}`"
+        class="h-screen" 
+        :data-timeline="index"
+      ></section>
+      
+      <!-- CTA scroll area -->
+      <section class="h-screen"></section>
     </div>
   </div>
 </template>
 
 <script setup>
-// SEO
+import { ref, onMounted, onUnmounted, nextTick, computed } from 'vue'
+import * as THREE from 'three'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+if (process.client) {
+  gsap.registerPlugin(ScrollTrigger)
+}
+
 useHead({
   title: 'Galería - Toda Bonita',
   meta: [
-    { name: 'description', content: 'Explora nuestra galería de transformaciones, servicios y productos. Descubre el trabajo excepcional de nuestro salón de belleza.' },
-    { name: 'keywords', content: 'galería, transformaciones, antes y después, servicios de belleza, productos premium' }
+    { name: 'description', content: 'Explora nuestra galería de transformaciones de belleza a través de una experiencia visual inmersiva.' },
+    { name: 'keywords', content: 'galería, fotos, transformaciones, belleza, scrollytelling' }
   ]
 })
 
-// Reactive data
-const scrollY = ref(0)
-const isVisible = ref({
-  hero: false,
-  transformaciones: false,
-  servicios: false,
-  productos: false,
-  ambiente: false
+// Refs
+const canvasRef = ref(null)
+const canvasOpacity = ref(0.3)
+const currentPhotoIndex = ref(-1) // -1 for intro
+const currentTimelineIndex = ref(0)
+const imageRefs = ref([])
+
+// Three.js variables
+let scene, camera, renderer, particles, clock
+
+// Photo Data
+const photoSections = [
+  {
+    title: "Transformaciones Capilares",
+    photos: [
+      {
+        title: 'Corte Bob Moderno',
+        description: 'Transformación completa con corte bob texturizado y mechas californianas que realzan la personalidad única de cada cliente',
+        category: 'Corte & Color',
+        main: '/img/servicio_peluqueria.jpg'
+      },
+      {
+        title: 'Balayage Caramelo',
+        description: 'Técnica de balayage con tonos caramelo y dorados naturales que aportan luminosidad y movimiento al cabello',
+        category: 'Colorimetría',
+        main: '/img/servicio_peluqueria2.jpg'
+      },
+      {
+        title: 'Rizado Definido',
+        description: 'Tratamiento de hidratación profunda que resalta la belleza natural del cabello rizado con definición perfecta',
+        category: 'Tratamiento',
+        main: '/img/servicio_peluqueria3.jpg'
+      }
+    ]
+  },
+  {
+    title: "Tratamientos Faciales",
+    photos: [
+      {
+        title: 'Limpieza Profunda',
+        description: 'Extracción de impurezas y purificación completa que devuelve la luminosidad natural a tu piel',
+        category: 'Limpieza',
+        main: '/img/servicio_peluqueria4.jpg'
+      },
+      {
+        title: 'Hidratación Intensiva',
+        description: 'Mascarilla con ácido hialurónico y vitaminas que restaura la elasticidad y suavidad de la piel',
+        category: 'Hidratación',
+        main: '/img/servicio_unas.jpg'
+      }
+    ]
+  },
+  {
+    title: "Arte en Uñas",
+    photos: [
+      {
+        title: 'Francés Moderno',
+        description: 'Estilo clásico reinventado con un toque contemporáneo que combina elegancia y modernidad',
+        category: 'Clásico',
+        main: '/img/servicio_unas1.jpg'
+      },
+      {
+        title: 'Arte Floral',
+        description: 'Diseños delicados inspirados en la naturaleza que transforman tus uñas en pequeñas obras de arte',
+        category: 'Artístico',
+        main: '/img/servicio_unas2.jpg'
+      }
+    ]
+  },
+  {
+    title: "Maquillaje Profesional",
+    photos: [
+      {
+        title: 'Look Natural Día',
+        description: 'Maquillaje suave y luminoso que realza tu belleza natural con técnicas profesionales impecables',
+        category: 'Diario',
+        main: '/img/servicio_unas3.jpg'
+      },
+      {
+        title: 'Glamour Nocturno',
+        description: 'Maquillaje sofisticado con smokey eyes y labios definidos perfecto para eventos especiales',
+        category: 'Noche',
+        main: '/img/servicio_peluqueria.jpg'
+      }
+    ]
+  }
+]
+
+const timelineMilestones = [
+  {
+    year: '2021',
+    title: 'Nuestros Inicios',
+    description: 'Todo comenzó con un sueño: crear un espacio donde cada mujer pudiera descubrir su mejor versión. Abrimos nuestras puertas con servicios básicos pero con una gran pasión por la belleza.',
+    image: '/img/servicio_peluqueria2.jpg'
+  },
+  {
+    year: '2022',
+    title: 'Expansión de Servicios',
+    description: 'Incorporamos tratamientos faciales avanzados y técnicas de colorimetría internacional. Nuestro equipo creció y nos especializamos en transformaciones completas.',
+    image: '/img/servicio_unas.jpg'
+  },
+  {
+    year: '2023',
+    title: 'Reconocimiento',
+    description: 'Fuimos reconocidas como uno de los salones más innovadores de la ciudad. Más de 500 clientas han confiado en nosotras para sus transformaciones.',
+    image: '/img/servicio_peluqueria3.jpg'
+  },
+  {
+    year: '2024',
+    title: 'Innovación Continua',
+    description: 'Implementamos las últimas tecnologías en belleza y sostenibilidad. Cada día seguimos evolucionando para ofrecerte la mejor experiencia.',
+    image: '/img/servicio_peluqueria4.jpg'
+  }
+]
+
+// Computed properties
+const allPhotos = computed(() => {
+  const photos = []
+  let photoIndex = 0
+  
+  photoSections.forEach((section, sectionIndex) => {
+    section.photos.forEach((photo, photoIndexInSection) => {
+      photos.push({
+        ...photo,
+        sectionTitle: section.title,
+        sectionNumber: sectionIndex + 1,
+        isFirstInSection: photoIndexInSection === 0,
+        globalIndex: photoIndex++
+      })
+    })
+  })
+  
+  return photos
 })
 
-const lightbox = ref({
-  isOpen: false,
-  item: null,
-  currentIndex: 0,
-  gallery: ''
+const totalSections = computed(() => 1 + allPhotos.value.length + timelineMilestones.length + 1)
+
+const progressPercentage = computed(() => {
+  const currentIndex = currentPhotoIndex.value + 2 // +2 because intro is -1
+  return Math.max(0, Math.min(100, (currentIndex / totalSections.value) * 100))
 })
 
-// Gallery data
-const galleryItems = {
-  transformaciones: [
-    {
-      title: 'Cambio de Look Completo',
-      description: 'Transformación radical de cabello largo y oscuro a un moderno bob rubio con mechas platinadas',
-      image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&h=600&fit=crop&crop=face'
-    },
-    {
-      title: 'Rejuvenecimiento Facial',
-      description: 'Tratamiento completo de limpieza profunda y hidratación con resultados visibles inmediatos',
-      image: 'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=800&h=600&fit=crop&crop=face'
-    },
-    {
-      title: 'Extensiones de Pestañas Dramáticas',
-      description: 'De pestañas naturales a un look de volumen dramático que realza completamente la mirada',
-      image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop&crop=face'
-    },
-    {
-      title: 'Color Fantasía',
-      description: 'Coloración vibrante con tonos rosas y morados para un look único y personalizado',
-      image: 'https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?w=800&h=600&fit=crop&crop=face'
-    },
-    {
-      title: 'Maquillaje de Novia',
-      description: 'Look nupcial elegante con técnicas de contouring y maquillaje de larga duración',
-      image: 'https://images.unsplash.com/photo-1583900985737-6d0495555783?w=800&h=600&fit=crop&crop=face'
-    },
-    {
-      title: 'Tratamiento Capilar',
-      description: 'Reparación intensiva de cabello dañado con productos profesionales de alta gama',
-      image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&h=600&fit=crop&crop=face'
-    }
-  ],
-  servicios: [
-    {
-      title: 'Corte y Peinado',
-      description: 'Técnicas profesionales de corte',
-      icon: '✂️',
-      image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&h=400&fit=crop'
-    },
-    {
-      title: 'Coloración',
-      description: 'Colores vibrantes y naturales',
-      icon: '🎨',
-      image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&h=400&fit=crop'
-    },
-    {
-      title: 'Extensiones de Pestañas',
-      description: 'Volumen y longitud perfectos',
-      icon: '👁️',
-      image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=400&fit=crop'
-    },
-    {
-      title: 'Manicura Premium',
-      description: 'Diseños únicos y duraderos',
-      icon: '💅',
-      image: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&h=400&fit=crop'
-    },
-    {
-      title: 'Limpieza Facial',
-      description: 'Tratamientos personalizados',
-      icon: '✨',
-      image: 'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600&h=400&fit=crop'
-    },
-    {
-      title: 'Masajes Relajantes',
-      description: 'Terapias de relajación',
-      icon: '🌸',
-      image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&h=400&fit=crop'
-    }
-  ],
-  productos: [
-    {
-      title: 'Serum Capilar Premium',
-      description: 'Reparación intensiva para cabello dañado',
-      category: 'Cabello',
-      icon: '💧',
-      price: '$65',
-      image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop'
-    },
-    {
-      title: 'Mascarilla Rejuvenecedora',
-      description: 'Hidratación profunda y anti-edad',
-      category: 'Skincare',
-      icon: '✨',
-      price: '$45',
-      image: 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=400&fit=crop'
-    },
-    {
-      title: 'Aceite de Argán Orgánico',
-      description: 'Nutrición natural para cabello y piel',
-      category: 'Natural',
-      icon: '🍃',
-      price: '$55',
-      image: 'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=400&h=400&fit=crop'
-    },
-    {
-      title: 'Kit Anti-Edad Completo',
-      description: 'Sistema completo de cuidado facial',
-      category: 'Skincare',
-      icon: '🎁',
-      price: '$120',
-      image: 'https://images.unsplash.com/photo-1570194065650-d99fb4bedf0a?w=400&h=400&fit=crop'
-    }
-  ],
-  ambiente: [
-    {
-      title: 'Recepción Elegante',
-      description: 'Espacio acogedor donde comienza tu experiencia de belleza',
-      image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&h=600&fit=crop'
-    },
-    {
-      title: 'Estaciones de Peluquería',
-      description: 'Equipamiento profesional de última generación',
-      image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&h=600&fit=crop'
-    },
-    {
-      title: 'Área de Relajación',
-      description: 'Zona tranquila para tratamientos faciales y masajes',
-      image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&h=600&fit=crop'
-    },
-    {
-      title: 'Sala VIP',
-      description: 'Espacio exclusivo para tratamientos premium',
-      image: 'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=800&h=600&fit=crop'
-    }
-  ]
-}
+const currentSection = computed(() => {
+  if (currentPhotoIndex.value === -1) {
+    return { title: 'Introducción' }
+  }
+  
+  if (currentPhotoIndex.value >= 0 && currentPhotoIndex.value < allPhotos.value.length) {
+    const photo = allPhotos.value[currentPhotoIndex.value]
+    return { title: photo.sectionTitle }
+  }
+  
+  if (showTimeline.value) {
+    return { title: 'Nuestra Evolución' }
+  }
+  
+  if (showCTA.value) {
+    return { title: 'Reservar Cita' }
+  }
+  
+  return { title: 'Galería' }
+})
 
-// Computed
-const currentGalleryItems = computed(() => {
-  return galleryItems[lightbox.value.gallery] || []
+const showTimeline = computed(() => {
+  return currentPhotoIndex.value >= allPhotos.value.length && 
+         currentPhotoIndex.value < allPhotos.value.length + timelineMilestones.length
+})
+
+const showCTA = computed(() => {
+  return currentPhotoIndex.value >= allPhotos.value.length + timelineMilestones.length
+})
+
+const currentTimelineItem = computed(() => {
+  if (showTimeline.value) {
+    const timelineIndex = currentPhotoIndex.value - allPhotos.value.length
+    return timelineMilestones[timelineIndex] || timelineMilestones[0]
+  }
+  return timelineMilestones[currentTimelineIndex.value]
 })
 
 // Methods
-const openLightbox = (item, gallery, index) => {
-  lightbox.value = {
-    isOpen: true,
-    item,
-    currentIndex: index,
-    gallery
+const setImageRef = (el, index) => {
+  imageRefs.value[index] = el
+}
+
+const setTimelineItem = (index) => {
+  currentTimelineIndex.value = index
+  currentPhotoIndex.value = allPhotos.value.length + index
+}
+
+const initThreeJS = () => {
+  if (!canvasRef.value) return
+
+  scene = new THREE.Scene()
+  camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
+  renderer = new THREE.WebGLRenderer({ canvas: canvasRef.value, alpha: true })
+  clock = new THREE.Clock()
+
+  renderer.setSize(window.innerWidth, window.innerHeight)
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+
+  // Create particles
+  const particlesGeometry = new THREE.BufferGeometry()
+  const particlesCount = 200
+  const posArray = new Float32Array(particlesCount * 3)
+
+  for (let i = 0; i < particlesCount * 3; i++) {
+    posArray[i] = (Math.random() - 0.5) * 30
   }
-  document.body.style.overflow = 'hidden'
+
+  particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3))
+
+  const particlesMaterial = new THREE.PointsMaterial({
+    size: 0.003,
+    color: '#FFB3C6',
+    transparent: true,
+    opacity: 0.5
+  })
+
+  particles = new THREE.Points(particlesGeometry, particlesMaterial)
+  scene.add(particles)
+
+  camera.position.z = 10
+
+  const animate = () => {
+    requestAnimationFrame(animate)
+
+    const elapsedTime = clock.getElapsedTime()
+    
+    if (particles) {
+      particles.rotation.y = elapsedTime * 0.01
+      particles.rotation.x = elapsedTime * 0.005
+    }
+
+    renderer.render(scene, camera)
+  }
+
+  animate()
 }
 
-const closeLightbox = () => {
-  lightbox.value.isOpen = false
-  document.body.style.overflow = 'auto'
-}
+const initScrollAnimations = () => {
+  if (!process.client) return
 
-const nextImage = () => {
-  const items = currentGalleryItems.value
-  lightbox.value.currentIndex = (lightbox.value.currentIndex + 1) % items.length
-  lightbox.value.item = items[lightbox.value.currentIndex]
-}
+  const sections = document.querySelectorAll('section[data-photo], section[data-timeline]')
+  const allSections = Array.from(document.querySelectorAll('section'))
 
-const previousImage = () => {
-  const items = currentGalleryItems.value
-  lightbox.value.currentIndex = lightbox.value.currentIndex === 0 
-    ? items.length - 1 
-    : lightbox.value.currentIndex - 1
-  lightbox.value.item = items[lightbox.value.currentIndex]
-}
-
-// Scroll handling
-const handleScroll = () => {
-  scrollY.value = window.scrollY
-}
-
-// Intersection Observer for animations
-const setupIntersectionObserver = () => {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const target = entry.target
-        if (target.id === 'hero') isVisible.value.hero = true
-        if (target.classList.contains('transformaciones-section')) isVisible.value.transformaciones = true
-        if (target.classList.contains('servicios-section')) isVisible.value.servicios = true
-        if (target.classList.contains('productos-section')) isVisible.value.productos = true
-        if (target.classList.contains('ambiente-section')) isVisible.value.ambiente = true
+  // Set up scroll triggers for each section
+  allSections.forEach((section, index) => {
+    const sectionIndex = index - 1 // -1 because first section is intro
+    
+    ScrollTrigger.create({
+      trigger: section,
+      start: "top 50%",
+      end: "bottom 50%",
+      onEnter: () => {
+        if (index === 0) {
+          // Intro section
+          currentPhotoIndex.value = -1
+        } else if (section.hasAttribute('data-photo')) {
+          // Photo section
+          const photoIndex = parseInt(section.getAttribute('data-photo'))
+          currentPhotoIndex.value = photoIndex
+        } else if (section.hasAttribute('data-timeline')) {
+          // Timeline section
+          const timelineIndex = parseInt(section.getAttribute('data-timeline'))
+          currentPhotoIndex.value = allPhotos.value.length + timelineIndex
+          currentTimelineIndex.value = timelineIndex
+        } else if (index === allSections.length - 1) {
+          // CTA section
+          currentPhotoIndex.value = allPhotos.value.length + timelineMilestones.length
+        }
+      },
+      onEnterBack: () => {
+        if (index === 0) {
+          currentPhotoIndex.value = -1
+        } else if (section.hasAttribute('data-photo')) {
+          const photoIndex = parseInt(section.getAttribute('data-photo'))
+          currentPhotoIndex.value = photoIndex
+        } else if (section.hasAttribute('data-timeline')) {
+          const timelineIndex = parseInt(section.getAttribute('data-timeline'))
+          currentPhotoIndex.value = allPhotos.value.length + timelineIndex
+          currentTimelineIndex.value = timelineIndex
+        } else if (index === allSections.length - 1) {
+          currentPhotoIndex.value = allPhotos.value.length + timelineMilestones.length
+        }
       }
     })
-  }, { threshold: 0.3 })
+  })
 
-  // Observe sections when they're available
-  nextTick(() => {
-    const sections = document.querySelectorAll('.scroll-section')
-    sections.forEach((section, index) => {
-      section.classList.add(['transformaciones-section', 'servicios-section', 'productos-section', 'ambiente-section'][index])
-      observer.observe(section)
-    })
+  // Canvas opacity control
+  ScrollTrigger.create({
+    trigger: document.body,
+    start: "top top",
+    end: "bottom bottom",
+    onUpdate: self => {
+      canvasOpacity.value = 0.5 - (self.progress * 0.3)
+    }
   })
 }
 
-// Lifecycle
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll)
-  setupIntersectionObserver()
+const handleResize = () => {
+  if (camera && renderer) {
+    camera.aspect = window.innerWidth / window.innerHeight
+    camera.updateProjectionMatrix()
+    renderer.setSize(window.innerWidth, window.innerHeight)
+  }
   
-  // Trigger hero animation
-  setTimeout(() => {
-    isVisible.value.hero = true
-  }, 500)
+  ScrollTrigger.refresh()
+}
+
+onMounted(async () => {
+  if (process.client) {
+    await nextTick()
+    
+    initThreeJS()
+    
+    // Wait for DOM to be ready
+    setTimeout(() => {
+      initScrollAnimations()
+    }, 1000)
+    
+    window.addEventListener('resize', handleResize)
+  }
 })
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
-  document.body.style.overflow = 'auto'
-})
-
-// Keyboard navigation
-onMounted(() => {
-  const handleKeydown = (e) => {
-    if (!lightbox.value.isOpen) return
+  if (process.client) {
+    window.removeEventListener('resize', handleResize)
+    ScrollTrigger.getAll().forEach(trigger => trigger.kill())
     
-    if (e.key === 'Escape') closeLightbox()
-    if (e.key === 'ArrowLeft') previousImage()
-    if (e.key === 'ArrowRight') nextImage()
+    if (renderer) {
+      renderer.dispose()
+    }
   }
-  
-  window.addEventListener('keydown', handleKeydown)
-  
-  onUnmounted(() => {
-    window.removeEventListener('keydown', handleKeydown)
-  })
 })
 </script>
 
 <style scoped>
-/* Custom Animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-100px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(100px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes zoomIn {
-  from {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9) rotateY(15deg);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) rotateY(0deg);
-  }
-}
-
-@keyframes reveal {
-  from {
-    opacity: 0;
-    transform: translateY(30px) rotateX(15deg);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) rotateX(0deg);
-  }
-}
-
-@keyframes bounceCustom {
-  0%, 20%, 50%, 80%, 100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-30px);
-  }
-  60% {
-    transform: translateY(-15px);
-  }
-}
-
-/* Animation Classes */
-.animate-title {
-  animation: fadeInUp 1.2s ease-out;
-}
-
-.animate-subtitle {
-  animation: fadeInUp 1.2s ease-out 0.3s both;
-}
-
-.animate-arrow {
-  animation: bounceCustom 2s infinite 1s;
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.8s ease-out;
-}
-
-.animate-slide-in-left {
-  animation: slideInLeft 0.8s ease-out;
-}
-
-.animate-slide-in-right {
-  animation: slideInRight 0.8s ease-out;
-}
-
-.animate-zoom-in {
-  animation: zoomIn 0.8s ease-out;
-}
-
-.animate-scale-in {
-  animation: scaleIn 0.8s ease-out;
-}
-
-.animate-reveal {
-  animation: reveal 1s ease-out;
-}
-
-.animate-fade-in {
-  animation: fadeInUp 0.6s ease-out;
-}
-
-.animate-delay-1 { animation-delay: 0.2s; animation-fill-mode: both; }
-.animate-delay-2 { animation-delay: 0.4s; animation-fill-mode: both; }
-.animate-delay-3 { animation-delay: 0.6s; animation-fill-mode: both; }
-
-/* Layout Styles */
-.hero-gallery {
-  background: linear-gradient(135deg, #ff6b9d 0%, #ff8a5c 50%, #c471ed 100%);
-}
-
-.masonry-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  grid-auto-rows: minmax(200px, auto);
-}
-
-.masonry-item {
-  position: relative;
-  overflow: hidden;
-  border-radius: 1rem;
-}
-
-.masonry-item:nth-child(odd) {
-  grid-row: span 2;
-}
-
-.product-showcase {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-}
-
-.ambiente-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 2rem;
-}
-
-.ambiente-item {
-  height: 400px;
-  position: relative;
-}
-
-.ambiente-item:nth-child(even) {
-  margin-top: 2rem;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .masonry-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .product-showcase {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem;
-  }
-  
-  .ambiente-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .ambiente-item:nth-child(even) {
-    margin-top: 0;
-  }
-}
-
-/* Scroll Behavior */
-.gallery-page {
+/* Smooth scrolling */
+html {
   scroll-behavior: smooth;
 }
 
-/* Loading Animation */
-.gallery-item {
-  opacity: 0;
-  transform: translateY(30px);
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
 }
 
-.gallery-item.animate-slide-in-left,
-.gallery-item.animate-slide-in-right {
-  opacity: 1;
-  transform: translateY(0);
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, var(--pink-medium, #FFB3C6), var(--coral, #FF9A8B));
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, var(--pink-dark, #FF8FAB), var(--coral, #FF9A8B));
+}
+
+/* Three.js canvas background */
+canvas {
+  background: linear-gradient(135deg, 
+    var(--cream, #FFFEF7) 0%, 
+    var(--pink-pastel, #FFE5EC) 30%, 
+    var(--champagne, #F7E7CE) 100%
+  );
+}
+
+/* Smooth transitions for all elements */
+* {
+  transition-property: transform, opacity, background-color, border-color, box-shadow, scale;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hide scrollbar on mobile for cleaner look */
+@media (max-width: 768px) {
+  html {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  html::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Smaller text on mobile */
+  .text-6xl {
+    font-size: 3rem;
+  }
+  
+  .text-8xl {
+    font-size: 4rem;
+  }
 }
 </style>

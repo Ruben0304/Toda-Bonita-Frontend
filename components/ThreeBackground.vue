@@ -1,5 +1,5 @@
 <template>
-  <div ref="container" class="absolute inset-0 overflow-hidden opacity-20"></div>
+  <div ref="container" class="absolute inset-0 overflow-hidden opacity-30"></div>
 </template>
 
 <script setup>
@@ -87,7 +87,7 @@ const createParticles = () => {
     size: 2,
     vertexColors: true,
     transparent: true,
-    opacity: 0.8,
+    opacity: 0.9,
     sizeAttenuation: true
   })
 
@@ -103,7 +103,7 @@ const createMorphingShapes = () => {
     const material = new THREE.MeshBasicMaterial({
       color: new THREE.Color().setHSL(0.9 + Math.random() * 0.1, 0.5, 0.7),
       transparent: true,
-      opacity: 0.3,
+      opacity: 0.4,
       wireframe: true
     })
     
@@ -128,7 +128,7 @@ const createFloatingOrbs = () => {
     const material = new THREE.MeshBasicMaterial({
       color: new THREE.Color().setHSL(0.08 + Math.random() * 0.1, 0.8, 0.6),
       transparent: true,
-      opacity: 0.6
+      opacity: 0.7
     })
     
     const orb = new THREE.Mesh(geometry, material)

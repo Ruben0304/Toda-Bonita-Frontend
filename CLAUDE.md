@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Nuxt 4 application for "Toda Bonita" beauty salon website. It's a single-page application showcasing beauty services, transformations, products, and contact information with a modern, aesthetic design using custom CSS animations and Tailwind CSS.
+This is a Nuxt 4 application for "Toda Bonita" beauty salon website. It's a multi-page application featuring a beauty salon's services, products, gallery, booking system, and admin panel with modern aesthetic design using custom CSS animations, Tailwind CSS, and advanced libraries.
 
 ## Development Commands
 
@@ -20,20 +20,36 @@ This is a Nuxt 4 application for "Toda Bonita" beauty salon website. It's a sing
 - **Nuxt 4**: Vue.js meta-framework with auto-imports and file-based routing
 - **Vue 3**: Composition API used throughout components
 - **Tailwind CSS**: Utility-first CSS framework
+- **Three.js**: 3D background animations and effects
+- **GSAP**: Advanced animations library
+- **AOS**: Animate On Scroll library for scroll-triggered animations
+- **Lenis**: Smooth scrolling library
+- **Nuxt Icon**: Icon management with Iconify integration (Lucide, Heroicons, Tabler collections)
+- **Google Fonts**: Typography with Playfair Display, Inter, and Montserrat
 - **Custom CSS**: Extensive custom animations and styling in `assets/main.css`
 
 ### Project Structure
-- **`pages/index.vue`**: Main landing page with all sections integrated directly:
-  - Hero section with elegant gradient design
-  - Transformaciones (before/after showcase)
-  - Servicios (services grid with icons)
-  - Productos (product showcase)
-  - Contacto (contact information and social links)
+- **`pages/`**: File-based routing structure:
+  - `index.vue`: Main landing page with hero section and Three.js background
+  - `servicios.vue`: Services listing page
+  - `productos.vue`: Products catalog page
+  - `galeria.vue`: Gallery/transformations showcase
+  - `reserva.vue`: Booking/reservation system
+  - `contacto.vue`: Contact information page
+  - `carrito.vue`: Shopping cart functionality
+  - `servicio/[id].vue`: Dynamic service detail pages
+  - `producto/[id].vue`: Dynamic product detail pages
+  - `admin/index.vue`: Admin dashboard with product and reservation management
 - **`layouts/default.vue`**: Global layout with Navigation and Footer, optimized spacing
-- **`components/`**: Only reusable components:
+- **`components/`**: Reusable components:
   - `Navigation.vue`: Site navigation (desktop sidebar + mobile top nav)
   - `Footer.vue`: Site footer
-  - `ThreeBackground.vue`: 3D background component (if used)
+  - `ThreeBackground.vue`: 3D background component with Three.js
+  - `HeroAnimations.vue`: Hero section animation component
+  - `AdminProductos.vue`: Admin product management
+  - `AdminReservas.vue`: Admin reservation management
+- **`plugins/`**: Client-side plugins:
+  - `aos.client.js/ts`: AOS animation initialization
 - **`assets/main.css`**: Custom CSS with:
   - CSS custom properties for brand colors (pink/orange/green pastels)
   - Custom animations (fadeInUp, float, pulse, shimmer, gradientShift)
@@ -51,36 +67,51 @@ This is a Nuxt 4 application for "Toda Bonita" beauty salon website. It's a sing
   - Smooth animations and transitions
   - Rounded corners (rounded-3xl, rounded-2xl)
 - **Responsive**: Mobile-first approach with desktop sidebar navigation
-- **Typography**: Inter font family for clean, modern look
+- **Typography**: Multiple font families (Playfair Display for headings, Inter for body, Montserrat for accents)
 
 ### Nuxt Configuration
-- **Modules**: `@nuxtjs/tailwindcss` for Tailwind CSS integration
+- **Modules**: 
+  - `@nuxtjs/tailwindcss`: Tailwind CSS integration
+  - `@nuxt/icon`: Icon management with Iconify (Lucide, Heroicons, Tabler)
+  - `@nuxtjs/google-fonts`: Web font loading
 - **Auto-imports**: Components are automatically imported (no need for explicit imports)
 - **DevTools**: Enabled for development
 - **CSS**: Global styles loaded from `~/assets/main.css`
+- **External libraries**: AOS CSS and JS loaded via CDN for animations
 
 ## Development Notes
 
-- **Architecture**: Single-page application with all sections in `pages/index.vue`
+- **Architecture**: Multi-page application with dedicated pages for different functionality
 - **Components**: Vue 3 Composition API with `<script setup>`
 - **SEO**: Optimized with `useHead()` for meta tags and page title
-- **Icons**: Uses emoji icons instead of external icon libraries for better performance
+- **Icons**: Uses Nuxt Icon with Iconify integration (Lucide icons primarily)
 - **Styling**: Custom scrollbar styling and smooth scroll behavior implemented
-- **Animations**: Extensive use of CSS animations for enhanced user experience
+- **Animations**: 
+  - Three.js for 3D background effects
+  - AOS for scroll-triggered animations
+  - GSAP for advanced animations
+  - Custom CSS animations for enhanced user experience
 - **Responsive**: Mobile-responsive design with different navigation patterns for mobile/desktop
-- **Performance**: Eliminated unnecessary section components, keeping only reusable components
+- **Admin functionality**: Separate admin pages for managing products and reservations
+- **E-commerce features**: Product pages, shopping cart, and reservation system
 
 ## Recent Changes (Latest Update)
 
-- **Reorganized structure**: Moved all sections from separate components into `pages/index.vue`
-- **Simplified components folder**: Only contains reusable components (Navigation, Footer, ThreeBackground)
-- **Improved design**: 
-  - Changed background to subtle white-to-pink gradient (less saturated)
-  - Fixed navigation spacing issues
-  - Replaced external icons with emoji for better reliability
-  - Enhanced typography with Inter font
-  - Improved card hover effects and shadows
-- **Fixed layout issues**: Removed unwanted spacing between navigation and content
+- **Expanded to multi-page application**: Added dedicated pages for services, products, gallery, reservations, contact, and admin
+- **Enhanced functionality**: 
+  - Added shopping cart system
+  - Implemented booking/reservation system
+  - Created admin dashboard for product and reservation management
+  - Added dynamic routing for individual products and services
+- **Improved libraries and animations**:
+  - Integrated Three.js for 3D background effects
+  - Added GSAP for advanced animations
+  - Implemented AOS for scroll-triggered animations
+  - Enhanced icon system with Nuxt Icon and Iconify
+- **Typography and design**: 
+  - Added multiple Google Fonts (Playfair Display, Inter, Montserrat)
+  - Enhanced visual hierarchy and design consistency
+- **Component structure**: Added specialized admin components and hero animations
 
 ### Navigation & Layout Fixes (January 2025)
 

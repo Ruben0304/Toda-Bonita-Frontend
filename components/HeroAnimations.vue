@@ -1,27 +1,31 @@
 <template>
   <div class="hero-container relative overflow-hidden">
     <!-- Elementos decorativos sutiles -->
-    <div class="absolute top-10 right-10 w-32 h-32 rounded-full opacity-20 animate-float-slow">
-      <div class="w-full h-full rounded-full bg-gradient-to-br from-pink-300/20 to-orange-300/20 blur-xl"></div>
+    <div class="absolute top-10 right-10 w-32 h-32 rounded-full opacity-25 animate-float-slow">
+      <div class="w-full h-full rounded-full bg-gradient-to-br from-pink-300/30 to-orange-300/30 blur-xl"></div>
     </div>
     
-    <div class="absolute bottom-20 left-10 w-24 h-24 rounded-full opacity-15 animate-float-medium">
-      <div class="w-full h-full rounded-full bg-gradient-to-br from-purple-300/20 to-cyan-300/20 blur-lg"></div>
+    <div class="absolute bottom-20 left-10 w-24 h-24 rounded-full opacity-20 animate-float-medium">
+      <div class="w-full h-full rounded-full bg-gradient-to-br from-purple-300/30 to-cyan-300/30 blur-lg"></div>
     </div>
     
-    <div class="absolute top-1/3 left-1/4 w-16 h-16 rounded-full opacity-10 animate-float-fast">
-      <div class="w-full h-full rounded-full bg-gradient-to-br from-yellow-300/20 to-pink-300/20 blur-md"></div>
+    <div class="absolute top-1/3 left-1/4 w-16 h-16 rounded-full opacity-15 animate-float-fast">
+      <div class="w-full h-full rounded-full bg-gradient-to-br from-yellow-300/30 to-pink-300/30 blur-md"></div>
     </div>
 
     <!-- Contenido principal con animaciones AOS sutiles -->
     <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
-      <!-- Logo/Icon decorativo con animación sutil -->
+      <!-- Logo decorativo con animación sutil -->
       <div 
-        class="mx-auto mb-6 w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-400 to-orange-400 flex items-center justify-center shadow-lg"
+        class="mx-auto mb-6 w-16 h-16 rounded-2xl bg-white/95 flex items-center justify-center shadow-lg border border-pink-100"
         data-aos="fade-down"
         data-aos-duration="800"
       >
-        <Icon name="lucide:sparkles" class="w-8 h-8 text-white" />
+        <img 
+          src="/img/logolisto.png" 
+          alt="Toda Bonita Logo" 
+          class="w-12 h-12 object-contain"
+        />
       </div>
 
       <!-- Título principal con animación sutil -->
