@@ -4,15 +4,8 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     '@nuxtjs/tailwindcss',
-    '@nuxt/icon',
     '@nuxtjs/google-fonts'
   ],
-  icon: {
-    provider: 'iconify',
-    serverBundle: {
-      collections: ['lucide', 'heroicons', 'tabler']
-    }
-  },
   css: ['~/assets/main.css'],
   googleFonts: {
     families: {
