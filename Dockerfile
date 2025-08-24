@@ -19,6 +19,12 @@ RUN npm cache clean --force && \
 # Copy source code
 COPY . .
 
+# Create missing TypeScript config files that nuxt prepare might not generate in Docker
+RUN mkdir -p .nuxt && \
+    echo '{"extends": "./tsconfig.json","compilerOptions": {"composite": false,"types": ["node"]},"include": ["../plugins/**/*","../components/**/*","../layouts/**/*","../pages/**/*","../composables/**/*","../utils/**/*","../middleware/**/*","../assets/**/*"]}' > .nuxt/tsconfig.app.json && \
+    echo '{"compilerOptions": {"allowJs": true,"esModuleInterop": true,"forceConsistentCasingInFileNames": true,"isolatedModules": true,"jsx": "preserve","lib": ["ESNext", "DOM"],"module": "ESNext","moduleDetection": "force","moduleResolution": "Bundler","noEmit": true,"resolveJsonModule": true,"skipLibCheck": true,"strict": true,"target": "ESNext","verbatimModuleSyntax": true}}' > .nuxt/tsconfig.shared.json && \
+    echo '{"extends": "./tsconfig.shared.json","compilerOptions": {"composite": true,"module": "ESNext","moduleResolution": "Bundler","types": ["node"]},"include": ["../nuxt.config.ts","../tailwind.config.js","../vite.config.ts"]}' > .nuxt/tsconfig.node.json
+
 # Build the application
 RUN npm run build
 
